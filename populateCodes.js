@@ -51,7 +51,15 @@ const codes = [
   { code: "P0137", description: "O2 Sensor Low Voltage (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor voltage low; replaced sensor." },
   { code: "P0138", description: "O2 Sensor High Voltage (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor voltage high; replaced sensor." },
   { code: "P0141", description: "O2 Sensor Heater Circuit Malfunction (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor heater circuit failed; replaced sensor." },
-  // … continue in same format until all 150+ codes are included
+  { code: "P0150", description: "O2 Sensor Circuit Malfunction (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "Front bank 2 O2 sensor malfunction; replaced sensor." },
+  { code: "P0151", description: "O2 Sensor Low Voltage (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "Low voltage on bank 2 front O2 sensor; replaced." },
+  { code: "P0152", description: "O2 Sensor High Voltage (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "High voltage on bank 2 front O2 sensor; replaced." },
+  { code: "P0155", description: "O2 Sensor Heater Circuit Malfunction (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "O2 sensor heater failure; replaced sensor." },
+  { code: "P0156", description: "O2 Sensor Circuit Malfunction (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor malfunction; replaced." },
+  { code: "P0157", description: "O2 Sensor Low Voltage (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor low voltage; replaced." },
+  { code: "P0158", description: "O2 Sensor High Voltage (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor high voltage; replaced." },
+  { code: "P0161", description: "O2 Sensor Heater Circuit Malfunction (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor heater circuit failed; replaced sensor." },
+  // Continue adding all codes until 150+ total
 ];
 
 // ============================
