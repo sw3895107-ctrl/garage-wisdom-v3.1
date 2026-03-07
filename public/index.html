@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garage Wisdom</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial, Helvetica, sans-serif;
+margin:0;
+padding:0;
+text-align:center;
+}
+
+header{
+background:#020617;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+padding:40px 20px;
+max-width:700px;
+margin:auto;
+}
+
+input{
+padding:14px;
+font-size:18px;
+width:220px;
+border-radius:6px;
+border:none;
+margin-right:10px;
+}
+
+button{
+padding:14px 20px;
+font-size:16px;
+background:#22c55e;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#16a34a;
+}
+
+#result{
+margin-top:30px;
+background:#1e293b;
+padding:25px;
+border-radius:10px;
+text-align:left;
+}
+
+ul{
+padding-left:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+Garage Wisdom
+</header>
+
+<div class="container">
+
+<h2>Check Engine Code Lookup</h2>
+
+<p>Enter an OBD-II code</p>
+
+<input id="codeInput" placeholder="Example: P0301">
+
+<button onclick="lookupCode()">Search</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function lookupCode(){
+
+const codeInput = document.getElementById("codeInput").value.toUpperCase()
+const resultBox = document.getElementById("result")
+
+if(!codeInput){
+resultBox.innerHTML = "Enter a code first."
+return
+}
+
+resultBox.innerHTML = "Searching..."
+
+try{
+
+const response = await fetch(`https://garage-wisdom-v3-1.onrender.com/api/dtc/${codeInput}`)
+
+if(!response.ok){
+resultBox.innerHTML = "Code not found."
+return
+}
+
+const data = await response.json()
+
+resultBox.innerHTML = `
+<h2>${data.code} - ${data.title}</h2>
+
+<p><strong>Explanation:</strong><br>
+${data.plainExplanation}</p>
+
+<p><strong>System:</strong> ${data.system}</p>
+
+<p><strong>Severity:</strong> ${data.severity}</p>
+
+<strong>Common Causes</strong>
+
+<ul>
+${data.commonCauses.map(cause => `<li>${cause}</li>`).join("")}
+</ul>
+`
+
+}
+catch(error){
+resultBox.innerHTML = "Server error. Try again."
+}
+
+}
+
+</script>
+
+</body>
+</html>
