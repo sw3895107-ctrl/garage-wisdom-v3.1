@@ -1,20 +1,3 @@
-//////////////////////////
-// populateCodes.js - Garage Wisdom Full Database
-//////////////////////////
-
-const mongoose = require('mongoose');
-
-// MongoDB Schema
-const CodeSchema = new mongoose.Schema({
-  code: { type: String, required: true, unique: true },
-  description: { type: String, required: true },
-  fix: { type: String, required: true },
-  story: { type: String }
-});
-
-const Code = mongoose.model('Code', CodeSchema);
-
-// 150+ Garage Wisdom codes with mechanic stories
 const codes = [
   { code: "P0171", description: "System Too Lean Bank 1", fix: "Clean MAF sensor or repair vacuum leak", story: "Customer replaced O2 sensors and spent $400. Real problem was a cracked intake hose behind throttle body causing vacuum leak." },
   { code: "P0174", description: "System Too Lean Bank 2", fix: "Check for vacuum leaks or faulty O2 sensors", story: "Bank 2 running lean due to leaking intake gasket; replacing gasket fixed CEL." },
@@ -37,23 +20,23 @@ const codes = [
   { code: "P0101", description: "Mass Air Flow Sensor Circuit Range/Performance", fix: "Clean or replace MAF sensor", story: "Dirty MAF sensor caused poor fuel economy; cleaning solved issue." },
   { code: "P0102", description: "Mass Air Flow Sensor Low Input", fix: "Check wiring or replace MAF sensor", story: "MAF sensor reading too low. Replaced sensor and problem resolved." },
   { code: "P0103", description: "Mass Air Flow Sensor High Input", fix: "Replace MAF sensor", story: "High signal from MAF sensor triggered CEL. Sensor replaced." },
-  // … continue adding the remaining codes up to 150+ like this
+  { code: "P0116", description: "Coolant Temperature Sensor Range/Performance", fix: "Replace CTS sensor", story: "CTS sensor reading out of range. Replaced sensor and resolved CEL." },
+  { code: "P0117", description: "Coolant Temperature Sensor Low Input", fix: "Replace CTS sensor", story: "CTS reading too low. Replaced sensor, problem solved." },
+  { code: "P0122", description: "Throttle/Pedal Position Sensor Low Input", fix: "Replace throttle position sensor (TPS)", story: "TPS reading low; replacing sensor cleared CEL." },
+  { code: "P0123", description: "Throttle/Pedal Position Sensor High Input", fix: "Replace throttle position sensor (TPS)", story: "TPS reading high; replaced sensor." },
+  { code: "P0130", description: "O2 Sensor Circuit Malfunction (Bank 1, Sensor 1)", fix: "Replace O2 sensor", story: "Front O2 sensor malfunction; replaced sensor." },
+  { code: "P0135", description: "O2 Sensor Heater Circuit Malfunction (Bank 1, Sensor 1)", fix: "Replace O2 sensor", story: "O2 sensor heater circuit failed; sensor replaced." },
+  { code: "P0136", description: "O2 Sensor Circuit Malfunction (Bank 1, Sensor 2)", fix: "Replace rear O2 sensor", story: "Rear O2 sensor malfunctioning; replaced sensor." },
+  { code: "P0137", description: "O2 Sensor Low Voltage (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor voltage low; replaced sensor." },
+  { code: "P0138", description: "O2 Sensor High Voltage (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor voltage high; replaced sensor." },
+  { code: "P0141", description: "O2 Sensor Heater Circuit Malfunction (Bank 1, Sensor 2)", fix: "Replace O2 sensor", story: "Rear O2 sensor heater circuit failed; replaced sensor." },
+  { code: "P0150", description: "O2 Sensor Circuit Malfunction (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "Front bank 2 O2 sensor malfunction; replaced sensor." },
+  { code: "P0151", description: "O2 Sensor Low Voltage (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "Low voltage on bank 2 front O2 sensor; replaced." },
+  { code: "P0152", description: "O2 Sensor High Voltage (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "High voltage on bank 2 front O2 sensor; replaced." },
+  { code: "P0155", description: "O2 Sensor Heater Circuit Malfunction (Bank 2, Sensor 1)", fix: "Replace O2 sensor", story: "O2 sensor heater failure; replaced sensor." },
+  { code: "P0156", description: "O2 Sensor Circuit Malfunction (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor malfunction; replaced." },
+  { code: "P0157", description: "O2 Sensor Low Voltage (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor low voltage; replaced." },
+  { code: "P0158", description: "O2 Sensor High Voltage (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor high voltage; replaced." },
+  { code: "P0161", description: "O2 Sensor Heater Circuit Malfunction (Bank 2, Sensor 2)", fix: "Replace O2 sensor", story: "Rear bank 2 O2 sensor heater circuit failed; replaced sensor." },
+  // … continue this format until you reach 150+ codes
 ];
-
-const MONGO_URI = "mongodb+srv://GWAdmin:Scott23@cluster0.pfib1ha.mongodb.net/garage_wisdom";
-
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(async () => {
-  console.log("MongoDB connected, inserting codes...");
-  for (const code of codes) {
-    await Code.updateOne(
-      { code: code.code },
-      { $set: code },
-      { upsert: true }
-    );
-  }
-  console.log("All codes inserted successfully!");
-  mongoose.disconnect();
-}).catch(err => console.error(err));
