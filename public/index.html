@@ -1,133 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garage Wisdom</title>
-
-<style>
-
-body{
-font-family: Arial, Helvetica, sans-serif;
-background:#0f172a;
-color:white;
-margin:0;
-padding:0;
-text-align:center;
-}
-
-header{
-background:#020617;
-padding:20px;
-font-size:28px;
-font-weight:bold;
-}
-
-.container{
-max-width:700px;
-margin:auto;
-padding:40px 20px;
-}
-
-input{
-padding:12px;
-font-size:18px;
-width:220px;
-border-radius:6px;
-border:none;
-margin-right:10px;
-}
-
-button{
-padding:12px 20px;
-font-size:16px;
-background:#22c55e;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-button:hover{
-background:#16a34a;
-}
-
-#result{
-margin-top:30px;
-background:#1e293b;
-padding:25px;
-border-radius:10px;
-text-align:left;
-}
-
-ul{
-padding-left:20px;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage Wisdom - Real Fixes, Real Savings</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+    <header>
+        <h1>Garage Wisdom</h1>
+        <p>Real mechanic fixes. Real savings. No $1200 dealer quotes.</p>
+    </header>
 
-<header>
-Garage Wisdom
-</header>
+    <main>
+        <section class="intro">
+            <h2>Check Engine Light Solutions</h2>
+            <p>Get solutions that actually work, verified by mechanics.</p>
+        </section>
 
-<div class="container">
+        <section class="fixes">
+            <h2>Popular Fixes</h2>
+            <ul>
+                <li>OBD2 Sensor Resets</li>
+                <li>Throttle Body Cleaning</li>
+                <li>Mass Air Flow Sensor Fixes</li>
+                <li>EVAP & Catalytic Converter Tips</li>
+            </ul>
+        </section>
 
-<h2>Check Engine Code Lookup</h2>
+        <section class="api-test">
+            <h2>Test Backend</h2>
+            <button id="testBtn">Test API</button>
+            <div id="apiResponse"></div>
+        </section>
+    </main>
 
-<p>Enter an OBD-II code</p>
+    <footer>
+        <p>&copy; 2026 Garage Wisdom</p>
+    </footer>
 
-<input id="codeInput" placeholder="Example: P0301">
-<button onclick="lookupCode()">Search</button>
-
-<div id="result"></div>
-
-</div>
-
-<script>
-
-async function lookupCode(){
-
-const code = document.getElementById("codeInput").value.toUpperCase();
-const result = document.getElementById("result");
-
-if(!code){
-result.innerHTML="Enter a code.";
-return;
-}
-
-result.innerHTML="Searching...";
-
-try{
-
-const res = await fetch("https://garage-wisdom-v3-1.onrender.com/api/dtc/"+code);
-
-if(!res.ok){
-result.innerHTML="Code not found.";
-return;
-}
-
-const data = await res.json();
-
-result.innerHTML=
-"<h2>"+data.code+" - "+data.title+"</h2>"+
-"<p><strong>Explanation:</strong><br>"+data.plainExplanation+"</p>"+
-"<p><strong>System:</strong> "+data.system+"</p>"+
-"<p><strong>Severity:</strong> "+data.severity+"</p>"+
-"<strong>Common Causes</strong>"+
-"<ul>"+data.commonCauses.map(c=>"<li>"+c+"</li>").join("")+"</ul>";
-
-}catch(e){
-
-result.innerHTML="Server error.";
-
-}
-
-}
-
-</script>
-
+    <script src="main.js"></script>
 </body>
 </html>
