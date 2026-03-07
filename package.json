@@ -1,40 +1,15 @@
 {
-  "name": "garage-wisdom-v3",
+  "name": "garage-wisdom",
   "version": "1.0.0",
-  "description": "Garage Wisdom DTC Decoder + Community Fix Engine",
+  "description": "Garage Wisdom backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "seed": "node seed/seedData.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "mongoose": "^8.3.2"
+    "mongoose": "^8.3.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
   }
 }
-const codes = [
-  { code: "P0171", description: "System Too Lean Bank 1", fix: "Clean MAF sensor or repair vacuum leak", story: "Customer replaced O2 sensors and spent $400. Real problem was a cracked intake hose behind throttle body causing vacuum leak." },
-  { code: "P0174", description: "System Too Lean Bank 2", fix: "Check for vacuum leaks or faulty O2 sensors", story: "Bank 2 running lean due to leaking intake gasket; replacing gasket fixed CEL." },
-  { code: "P0300", description: "Random/Multiple Cylinder Misfire Detected", fix: "Replace ignition coils or spark plugs; inspect fuel injectors", story: "Vehicle misfiring under load. Replaced spark plugs, but problem remained. Faulty ignition coil found." },
-  { code: "P0420", description: "Catalyst System Efficiency Below Threshold (Bank 1)", fix: "Replace O2 sensor or catalytic converter if needed", story: "Dealer quoted $1200 for catalytic converter. Real fix was lazy rear O2 sensor." },
-  { code: "P0430", description: "Catalyst System Efficiency Below Threshold (Bank 2)", fix: "Check O2 sensors or catalytic converter", story: "Catalytic converter efficiency low. Replacing rear O2 sensor fixed CEL." },
-  { code: "P0440", description: "Evaporative Emission System", fix: "Inspect EVAP hoses and gas cap", story: "EVAP leak caused by loose gas cap. Tightening cap cleared CEL." },
-  { code: "P0442", description: "EVAP System Small Leak Detected", fix: "Replace gas cap or small EVAP line", story: "Small EVAP leak detected. Replaced cracked hose under tank; problem solved." },
-  { code: "P0455", description: "EVAP System Large Leak Detected", fix: "Replace gas cap seal", story: "Gas cap seal cracked. Replacing $12 cap fixed check engine light." },
-  { code: "P0500", description: "Vehicle Speed Sensor Malfunction", fix: "Replace VSS sensor", story: "Speedometer and ABS acted up. Replacing VSS solved the issue." },
-  { code: "P0505", description: "Idle Control System Malfunction", fix: "Clean or replace IAC valve", story: "Car idled rough. Cleaning IAC valve fixed idle without replacement." },
-  { code: "P0128", description: "Coolant Thermostat (Coolant Temp Below Regulating Temperature)", fix: "Replace thermostat", story: "Engine taking too long to warm up. Thermostat replaced; heater and efficiency back to normal." },
-  { code: "P0133", description: "O2 Sensor Circuit Slow Response (Bank 1, Sensor 1)", fix: "Replace O2 sensor", story: "Front O2 sensor slow. Replacing sensor fixed CEL." },
-  { code: "P0301", description: "Cylinder 1 Misfire Detected", fix: "Replace ignition coil or spark plug on cylinder 1", story: "Misfire in cylinder 1. Ignition coil replaced; car ran smooth." },
-  { code: "P0302", description: "Cylinder 2 Misfire Detected", fix: "Replace ignition coil or spark plug on cylinder 2", story: "Misfire in cylinder 2. Spark plug replacement solved problem." },
-  { code: "P0303", description: "Cylinder 3 Misfire Detected", fix: "Replace ignition coil or spark plug on cylinder 3", story: "Cylinder 3 misfire due to bad coil. Coil replaced." },
-  { code: "P0304", description: "Cylinder 4 Misfire Detected", fix: "Replace ignition coil or spark plug on cylinder 4", story: "Cylinder 4 misfire fixed with new spark plug." },
-  { code: "P0113", description: "Intake Air Temperature (IAT) Sensor High Input", fix: "Replace or clean IAT sensor", story: "IAT sensor giving high input. Cleaning sensor cleared CEL." },
-  { code: "P0115", description: "Coolant Temperature Sensor Malfunction", fix: "Replace CTS sensor", story: "CTS malfunction. Replacing sensor fixed CEL and gauge readings." },
-  { code: "P0101", description: "Mass Air Flow Sensor Circuit Range/Performance", fix: "Clean or replace MAF sensor", story: "Dirty MAF sensor caused poor fuel economy; cleaning solved issue." },
-  { code: "P0102", description: "Mass Air Flow Sensor Low Input", fix: "Check wiring or replace MAF sensor", story: "MAF sensor reading too low. Replaced sensor and problem resolved." },
-  { code: "P0103", description: "Mass Air Flow Sensor High Input", fix: "Replace MAF sensor", story: "High signal from MAF sensor triggered CEL. Sensor replaced." },
-  // … continue this format for all remaining codes up to 150+
-];
