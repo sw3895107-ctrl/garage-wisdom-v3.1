@@ -3,33 +3,13 @@
 <head>
   <title>Garage Wisdom</title>
   <style>
-    body {
-      font-family: Arial;
-      background:#111;
-      color:#fff;
-      text-align:center;
-      padding:40px;
-    }
-    input {
-      padding:10px;
-      font-size:16px;
-      width:200px;
-    }
-    button {
-      padding:10px 15px;
-      font-size:16px;
-      margin-left:5px;
-      cursor:pointer;
-    }
-    #result{
-      margin-top:30px;
-      background:#222;
-      padding:20px;
-      border-radius:8px;
-    }
+    body { font-family: Arial; background:#111; color:#fff; text-align:center; padding:40px; }
+    input { padding:10px; font-size:16px; width:200px; }
+    button { padding:10px 15px; font-size:16px; margin-left:5px; cursor:pointer; }
+    #result{ margin-top:30px; background:#222; padding:20px; border-radius:8px; text-align:left; }
+    h2 { margin-bottom:5px; }
   </style>
 </head>
-
 <body>
 
 <h1>Garage Wisdom</h1>
@@ -42,30 +22,17 @@
 
 <script>
 async function searchCode(){
-
   const code = document.getElementById("codeInput").value.trim().toUpperCase();
+  if(!code){ document.getElementById("result").innerHTML = "Enter a code."; return; }
 
-  if(!code){
-    document.getElementById("result").innerHTML = "Enter a code.";
-    return;
-  }
-
-  const res = await fetch("/api/codes/" + code);
-
-  if(!res.ok){
-    document.getElementById("result").innerHTML = "Code not found.";
-    return;
-  }
-
+  // Call AI diagnostic
+  const res = await fetch("/api/ai-diagnose/" + code);
+  if(!res.ok){ document.getElementById("result").innerHTML = "Code not found."; return; }
   const data = await res.json();
 
   document.getElementById("result").innerHTML =
-  `
-  <h2>${data.code}</h2>
-  <p><b>Description:</b> ${data.description}</p>
-  <p><b>Fix:</b> ${data.fix}</p>
-  <p><b>Mechanic Story:</b> ${data.story || "N/A"}</p>
-  `;
+  `<h2>${data.code}</h2>
+   <p>${data.ai_diagnosis}</p>`;
 }
 </script>
 
