@@ -16,8 +16,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
    MongoDB Connection
 ------------------------------*/
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.error("MongoDB connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 /* -----------------------------
    Schema & Model
@@ -62,7 +62,7 @@ app.get("/api/codes", async (req, res) => {
   }
 });
 
-// Add code
+// Add new code
 app.post("/api/codes", async (req, res) => {
   try {
     const newCode = new Code(req.body);
