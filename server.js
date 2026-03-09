@@ -1,27 +1,22 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
-const OpenAI = require("openai");
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const { Configuration, OpenAIApi } = require('openai');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
 
-// AI client
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error("MongoDB connection error:", err));
 
-/* -----------------------------
-   MongoDB Connection
-------------------------------*/
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
-
-/* -----------------------------
-   Schema & Model
-------------------------------*/
+// Schema & Model
 const CodeSchema = new mongoose.Schema({
   code: { type: String, required: true, unique: true },
   description: { type: String, required: true },
@@ -29,20 +24,21 @@ const CodeSchema = new mongoose.Schema({
   story: { type: String }
 });
 
-const Code = mongoose.model("Code", CodeSchema);
+const Code = mongoose.model('Code', CodeSchema);
 
-/* -----------------------------
-   Routes
-------------------------------*/
+// OpenAI setup
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY
+});
+const openai = new OpenAIApi(configuration);
 
-// Root
-app.get("/", (req, res) => res.send("Garage Wisdom API running"));
+// Routes
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
-// Get one code
-app.get("/api/codes/:code", async (req, res) => {
+app.get('/api/codes/:code', async (req, res) => {
   try {
-    const codeParam = req.params.code.toUpperCase().trim();
-    const data = await Code.findOne({ code: codeParam });
+    const code = req.params.code.toUpperCase().trim();
+    const data = await Code.findOne({ code });
     if (!data) return res.status(404).json({ error: "Code not found" });
     res.json(data);
   } catch (err) {
@@ -51,48 +47,29 @@ app.get("/api/codes/:code", async (req, res) => {
   }
 });
 
-// Get all codes
-app.get("/api/codes", async (req, res) => {
+// AI-powered diagnostic endpoint
+app.post('/api/ai-diagnose', async (req, res) => {
   try {
-    const data = await Code.find().sort({ code: 1 });
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
+    const { code } = req.body;
+    if (!code) return res.status(400).json({ error: "Code required" });
 
-// Add new code
-app.post("/api/codes", async (req, res) => {
-  try {
-    const newCode = new Code(req.body);
-    await newCode.save();
-    res.json(newCode);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+    const data = await Code.findOne({ code: code.toUpperCase().trim() });
+    if (!data) return res.status(404).json({ error: "Code not found" });
 
-// AI diagnostic
-app.get("/api/ai-diagnose/:code", async (req, res) => {
-  const code = req.params.code.toUpperCase().trim();
-  try {
-    const ai = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are an experienced automotive technician." },
-        { role: "user", content: `Explain the OBD2 trouble code ${code}. Include causes, diagnostic steps, and common repairs.` }
-      ]
+    const prompt = `Explain this automotive code in simple terms and give a step-by-step fix: ${data.code} - ${data.description}`;
+    const completion = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt,
+      max_tokens: 300
     });
-    res.json({ code, ai_diagnosis: ai.choices[0].message.content });
+
+    res.json({ code: data.code, ai_response: completion.data.choices[0].text.trim() });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "AI diagnostic failed" });
   }
 });
 
-/* -----------------------------
-   Start Server
-------------------------------*/
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
