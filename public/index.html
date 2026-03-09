@@ -1,44 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garage Wisdom - Real Fixes, Real Savings</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Garage Wisdom</title>
+  <style>
+    body {
+      font-family: Arial;
+      background:#111;
+      color:#fff;
+      text-align:center;
+      padding:40px;
+    }
+    input {
+      padding:10px;
+      font-size:16px;
+      width:200px;
+    }
+    button {
+      padding:10px 15px;
+      font-size:16px;
+      margin-left:5px;
+      cursor:pointer;
+    }
+    #result{
+      margin-top:30px;
+      background:#222;
+      padding:20px;
+      border-radius:8px;
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>Garage Wisdom</h1>
-        <p>Real mechanic fixes. Real savings. No $1200 dealer quotes.</p>
-    </header>
 
-    <main>
-        <section class="intro">
-            <h2>Check Engine Light Solutions</h2>
-            <p>Get solutions that actually work, verified by mechanics.</p>
-        </section>
+<h1>Garage Wisdom</h1>
+<p>Search an OBD2 Trouble Code</p>
 
-        <section class="fixes">
-            <h2>Popular Fixes</h2>
-            <ul>
-                <li>OBD2 Sensor Resets</li>
-                <li>Throttle Body Cleaning</li>
-                <li>Mass Air Flow Sensor Fixes</li>
-                <li>EVAP & Catalytic Converter Tips</li>
-            </ul>
-        </section>
+<input id="codeInput" placeholder="Enter code (P0300)">
+<button onclick="searchCode()">Search</button>
 
-        <section class="api-test">
-            <h2>Test Backend</h2>
-            <button id="testBtn">Test API</button>
-            <div id="apiResponse"></div>
-        </section>
-    </main>
+<div id="result"></div>
 
-    <footer>
-        <p>&copy; 2026 Garage Wisdom</p>
-    </footer>
+<script>
+async function searchCode(){
 
-    <script src="main.js"></script>
+  const code = document.getElementById("codeInput").value.trim().toUpperCase();
+
+  if(!code){
+    document.getElementById("result").innerHTML = "Enter a code.";
+    return;
+  }
+
+  const res = await fetch("/api/codes/" + code);
+
+  if(!res.ok){
+    document.getElementById("result").innerHTML = "Code not found.";
+    return;
+  }
+
+  const data = await res.json();
+
+  document.getElementById("result").innerHTML =
+  `
+  <h2>${data.code}</h2>
+  <p><b>Description:</b> ${data.description}</p>
+  <p><b>Fix:</b> ${data.fix}</p>
+  <p><b>Mechanic Story:</b> ${data.story || "N/A"}</p>
+  `;
+}
+</script>
+
 </body>
 </html>
