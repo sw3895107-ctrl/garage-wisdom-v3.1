@@ -25,14 +25,18 @@ async function searchCode(){
   const code = document.getElementById("codeInput").value.trim().toUpperCase();
   if(!code){ document.getElementById("result").innerHTML = "Enter a code."; return; }
 
-  // Call AI diagnostic
-  const res = await fetch("/api/ai-diagnose/" + code);
-  if(!res.ok){ document.getElementById("result").innerHTML = "Code not found."; return; }
-  const data = await res.json();
+  try {
+    const res = await fetch("/api/ai-diagnose/" + code);
+    if(!res.ok){ document.getElementById("result").innerHTML = "Code not found."; return; }
+    const data = await res.json();
 
-  document.getElementById("result").innerHTML =
-  `<h2>${data.code}</h2>
-   <p>${data.ai_diagnosis}</p>`;
+    document.getElementById("result").innerHTML =
+      `<h2>${data.code}</h2>
+       <p>${data.ai_diagnosis}</p>`;
+  } catch (err) {
+    console.error(err);
+    document.getElementById("result").innerHTML = "Error fetching AI diagnosis.";
+  }
 }
 </script>
 
