@@ -1,58 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garage Wisdom AI</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    input, button { padding: 10px; font-size: 16px; margin: 5px 0; }
-    #result { margin-top: 20px; }
-  </style>
+<title>Garage Wisdom</title>
+
+<link rel="stylesheet" href="garage.css">
+
 </head>
+
 <body>
-  <h1>Garage Wisdom AI</h1>
-  <input type="text" id="code" placeholder="Enter code (e.g., P0300)">
-  <button onclick="lookupCode()">Search</button>
-  <button onclick="aiDiagnose()">AI Diagnose</button>
-  <div id="result"></div>
 
-  <script>
-    async function lookupCode() {
-      const code = document.getElementById('code').value.trim();
-      if(!code) return alert("Enter a code");
-      const res = await fetch(`/api/codes/${code}`);
-      const data = await res.json();
-      const resultDiv = document.getElementById('result');
-      if(res.ok) {
-        resultDiv.innerHTML = `<h3>${data.code}</h3>
-                               <p><strong>Description:</strong> ${data.description}</p>
-                               <p><strong>Fix:</strong> ${data.fix}</p>
-                               <p><strong>Story:</strong> ${data.story || 'N/A'}</p>`;
-      } else {
-        resultDiv.innerHTML = `<p style="color:red">${data.error}</p>`;
-      }
-    }
+<header>
 
-    async function aiDiagnose() {
-      const code = document.getElementById('code').value.trim();
-      if(!code) return alert("Enter a code");
+<div class="logoRow">
 
-      const res = await fetch('/api/ai-diagnose', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
-      });
+<img src="images/logo.png" class="logo">
 
-      const data = await res.json();
-      const resultDiv = document.getElementById('result');
-      if(res.ok) {
-        resultDiv.innerHTML = `<h3>${data.code} - AI Diagnostic</h3>
-                               <p>${data.ai_response}</p>`;
-      } else {
-        resultDiv.innerHTML = `<p style="color:red">${data.error}</p>`;
-      }
-    }
-  </script>
+<div>
+
+<h1>GARAGE WISDOM</h1>
+
+<p class="tag">
+Built by a mechanic who got tired of crappy scan tools.
+</p>
+
+</div>
+
+</div>
+
+</header>
+
+
+<section class="dash">
+
+<div class="dashCard">
+
+<img src="images/engine.png">
+
+<h3>Engine Problems</h3>
+
+<p>
+Motor running like crap? Ask the AI.
+</p>
+
+</div>
+
+
+<div class="dashCard">
+
+<img src="images/obd.png">
+
+<h3>Check Engine</h3>
+
+<p>
+Got a code? We'll break it down in plain English.
+</p>
+
+</div>
+
+
+<div class="dashCard">
+
+<img src="images/tools.png">
+
+<h3>Fix Advice</h3>
+
+<p>
+Real wrench-turner explanations.
+</p>
+
+</div>
+
+</section>
+
+
+
+<section class="askBox">
+
+<h2>What's your vehicle doing?</h2>
+
+<input id="question"
+placeholder="Example: 5.7 Chevy cranks but won't start... what the hell is wrong?">
+
+<button onclick="ask()">Diagnose It</button>
+
+</section>
+
+
+<section id="response"></section>
+
+
+<footer>
+
+<p>
+Garage Wisdom — Straight talk diagnostics.
+</p>
+
+</footer>
+
+<script src="garage.js"></script>
+
 </body>
 </html>
