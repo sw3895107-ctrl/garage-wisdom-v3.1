@@ -1,7 +1,12 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import OpenAI from "openai";
+import path from "path";
+import { fileURLToPath } from "url";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -9,44 +14,63 @@ app.use(cors());
 
 const PORT = process.env.PORT || 10000;
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
-// Example Schema
+// Fix __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// MongoDB
+mongoose.connect(process.env.MONGO_URI)
+.then(()=>console.log("MongoDB connected"))
+.catch(err=>console.log(err));
+
+// Schema
 const QuestionSchema = new mongoose.Schema({
-  question: String,
-  answer: String,
-  createdAt: { type: Date, default: Date.now }
+  question:String,
+  answer:String,
+  createdAt:{type:Date,default:Date.now}
 });
 
-const Question = mongoose.model("Question", QuestionSchema);
+const Question = mongoose.model("Question",QuestionSchema);
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Garage Wisdom API Running");
+// AI route
+app.post("/ask",async(req,res)=>{
+  try{
+
+    const ai = await openai.chat.completions.create({
+      model:"gpt-4o-mini",
+      messages:[
+        {role:"system",content:"You are a professional automotive mechanic helping diagnose vehicle problems."},
+        {role:"user",content:req.body.question}
+      ]
+    });
+
+    const answer = ai.choices[0].message.content;
+
+    await Question.create({
+      question:req.body.question,
+      answer
+    });
+
+    res.json({answer});
+
+  }catch(err){
+    res.status(500).json({error:"AI request failed"});
+  }
 });
 
-app.get("/questions", async (req, res) => {
-  const data = await Question.find();
+// history
+app.get("/history",async(req,res)=>{
+  const data = await Question.find().sort({createdAt:-1}).limit(20);
   res.json(data);
 });
 
-app.post("/questions", async (req, res) => {
-  const newQuestion = new Question({
-    question: req.body.question,
-    answer: req.body.answer
-  });
+// frontend
+app.use(express.static(path.join(__dirname,"public")));
 
-  const saved = await newQuestion.save();
-  res.json(saved);
-});
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT,()=>{
+  console.log("Garage Wisdom running on port "+PORT);
 });
