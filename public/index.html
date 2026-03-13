@@ -3,9 +3,9 @@
 
 <head>
 
-<title>Garage Wisdom V4</title>
+<title>Garage Wisdom</title>
 
-<link rel="stylesheet" href="dash.css">
+<link rel="stylesheet" href="ui.css">
 
 </head>
 
@@ -13,91 +13,86 @@
 
 <header>
 
-<img src="images/logo.png" class="logo">
-
 <h1>Garage Wisdom</h1>
-
-<p class="subtitle">
-Real diagnostics. No corporate BS.
-</p>
+<p class="tagline">AI powered diagnostics built for real garages</p>
 
 </header>
 
 
-<section class="dashboard">
+<section class="hero">
 
-<div class="gaugeBox">
+<img src="images/car-hero.jpg">
 
-<h3>Engine Health</h3>
+<div class="vehicleInfo">
 
-<div class="gauge">
-<div id="engineGauge"></div>
-</div>
-
-</div>
-
-
-<div class="gaugeBox">
-
-<h3>Diagnostic Status</h3>
-
-<div class="gauge">
-<div id="codeGauge"></div>
-</div>
+<h2>Your Vehicle</h2>
+<p>Live diagnostics and repair insight</p>
 
 </div>
 
 </section>
 
 
-<section class="tools">
+<section class="dash">
 
-<div class="tool">
+<div class="gaugeCard">
 
-<img src="images/obd.png">
+<h3>RPM</h3>
 
-<h3>OBD Code</h3>
-
-<input id="codeInput" placeholder="Enter code like P0300">
-
-<button onclick="lookupCode()">Decode</button>
+<canvas id="rpmChart"></canvas>
 
 </div>
 
 
-<div class="tool">
+<div class="gaugeCard">
 
-<img src="images/wrench.png">
+<h3>Coolant Temp</h3>
 
-<h3>Ask the Mechanic</h3>
+<canvas id="tempChart"></canvas>
+
+</div>
+
+
+<div class="gaugeCard">
+
+<h3>Battery Voltage</h3>
+
+<canvas id="voltChart"></canvas>
+
+</div>
+
+</section>
+
+
+<section class="diagram">
+
+<h2>Engine Diagram</h2>
+
+<img src="images/engine-diagram.png" id="engineDiagram">
+
+<div id="partInfo">
+Click a part to see what it does
+</div>
+
+</section>
+
+
+<section class="aiPanel">
+
+<h2>Ask the AI Mechanic</h2>
 
 <input id="question"
-placeholder="What's the vehicle doing?">
+placeholder="Example: Engine misfires at idle">
 
-<button onclick="askAI()">Diagnose</button>
-
-</div>
-
-</section>
-
-
-<section id="responseBox">
-
-<h2>Diagnosis</h2>
+<button onclick="ask()">Diagnose</button>
 
 <div id="response"></div>
 
 </section>
 
 
-<footer>
-
-Garage Wisdom — Built by a wrench turner.
-
-</footer>
-
-
-<script src="dash.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="ui.js"></script>
 
 </body>
 </html>
