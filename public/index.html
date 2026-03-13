@@ -2,9 +2,10 @@
 <html>
 
 <head>
-<title>Garage Wisdom</title>
 
-<link rel="stylesheet" href="garage.css">
+<title>Garage Wisdom V4</title>
+
+<link rel="stylesheet" href="dash.css">
 
 </head>
 
@@ -12,93 +13,91 @@
 
 <header>
 
-<div class="logoRow">
-
 <img src="images/logo.png" class="logo">
 
-<div>
+<h1>Garage Wisdom</h1>
 
-<h1>GARAGE WISDOM</h1>
-
-<p class="tag">
-Built by a mechanic who got tired of crappy scan tools.
+<p class="subtitle">
+Real diagnostics. No corporate BS.
 </p>
-
-</div>
-
-</div>
 
 </header>
 
 
-<section class="dash">
+<section class="dashboard">
 
-<div class="dashCard">
+<div class="gaugeBox">
 
-<img src="images/engine.png">
+<h3>Engine Health</h3>
 
-<h3>Engine Problems</h3>
-
-<p>
-Motor running like crap? Ask the AI.
-</p>
+<div class="gauge">
+<div id="engineGauge"></div>
+</div>
 
 </div>
 
 
-<div class="dashCard">
+<div class="gaugeBox">
+
+<h3>Diagnostic Status</h3>
+
+<div class="gauge">
+<div id="codeGauge"></div>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="tools">
+
+<div class="tool">
 
 <img src="images/obd.png">
 
-<h3>Check Engine</h3>
+<h3>OBD Code</h3>
 
-<p>
-Got a code? We'll break it down in plain English.
-</p>
+<input id="codeInput" placeholder="Enter code like P0300">
 
-</div>
-
-
-<div class="dashCard">
-
-<img src="images/tools.png">
-
-<h3>Fix Advice</h3>
-
-<p>
-Real wrench-turner explanations.
-</p>
+<button onclick="lookupCode()">Decode</button>
 
 </div>
 
-</section>
 
+<div class="tool">
 
+<img src="images/wrench.png">
 
-<section class="askBox">
-
-<h2>What's your vehicle doing?</h2>
+<h3>Ask the Mechanic</h3>
 
 <input id="question"
-placeholder="Example: 5.7 Chevy cranks but won't start... what the hell is wrong?">
+placeholder="What's the vehicle doing?">
 
-<button onclick="ask()">Diagnose It</button>
+<button onclick="askAI()">Diagnose</button>
+
+</div>
 
 </section>
 
 
-<section id="response"></section>
+<section id="responseBox">
+
+<h2>Diagnosis</h2>
+
+<div id="response"></div>
+
+</section>
 
 
 <footer>
 
-<p>
-Garage Wisdom — Straight talk diagnostics.
-</p>
+Garage Wisdom — Built by a wrench turner.
 
 </footer>
 
-<script src="garage.js"></script>
+
+<script src="dash.js"></script>
 
 </body>
 </html>
