@@ -2635,3 +2635,83 @@
                 vehicle:'2006 Chevy Silverado 5.3L 178k miles',
                 author:'ChevyMike',
                 img:'https://
+                    <script>
+console.log("Garage Wisdom Loaded");
+
+// Sample data (replace later with DB)
+const fixes = [
+  { code: "P0300", text: "Random misfire - spark plugs or coils", type: "engine" },
+  { code: "P0171", text: "System too lean - vacuum leak", type: "fuel" },
+  { code: "P0420", text: "Catalytic converter efficiency", type: "exhaust" },
+  { code: "P0442", text: "Small EVAP leak", type: "emissions" },
+  { code: "P0101", text: "MAF sensor issue", type: "air" }
+];
+
+const input = document.querySelector(".search-box input");
+const suggestions = document.createElement("div");
+suggestions.className = "search-suggestions";
+document.querySelector(".search-box").appendChild(suggestions);
+
+// 🔍 SEARCH FUNCTION
+input.addEventListener("input", () => {
+  const value = input.value.toLowerCase();
+  suggestions.innerHTML = "";
+
+  if (!value) {
+    suggestions.classList.remove("active");
+    return;
+  }
+
+  const results = fixes.filter(f =>
+    f.code.toLowerCase().includes(value) ||
+    f.text.toLowerCase().includes(value)
+  );
+
+  results.forEach(r => {
+    const item = document.createElement("div");
+    item.className = "suggestion-item";
+
+    item.innerHTML = `
+      <div class="suggestion-code">${r.code}</div>
+      <div class="suggestion-text">${r.text}</div>
+      <div class="suggestion-type">${r.type}</div>
+    `;
+
+    item.onclick = () => {
+      input.value = r.code;
+      suggestions.classList.remove("active");
+      showResult(r);
+    };
+
+    suggestions.appendChild(item);
+  });
+
+  suggestions.classList.add("active");
+});
+
+// 🧠 RESULT DISPLAY
+function showResult(data) {
+  alert(`${data.code}\n\n${data.text}`);
+}
+
+// 🔘 CODE BUTTONS
+document.querySelectorAll(".code-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".code-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const code = btn.innerText;
+    const found = fixes.find(f => f.code === code);
+
+    if (found) showResult(found);
+  });
+});
+
+// 🏷️ QUICK TAGS
+document.querySelectorAll(".quick-tag").forEach(tag => {
+  tag.addEventListener("click", () => {
+    input.value = tag.innerText;
+    input.dispatchEvent(new Event("input"));
+  });
+});
+</script>
