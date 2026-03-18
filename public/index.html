@@ -44,7 +44,56 @@
             text-align:center;
             padding:2rem;
             border-bottom:4px solid var(--orange);
-        }
+        }<script>
+const input = document.querySelector(".search-box input");
+let suggestions = document.querySelector(".search-suggestions");
+if (!suggestions) {
+  suggestions = document.createElement("div");
+  suggestions.className = "search-suggestions";
+  document.querySelector(".search-box").appendChild(suggestions);
+}
+
+// Search
+input.addEventListener("input", async () => {
+  const val = input.value.trim();
+  if (!val) { suggestions.classList.remove("active"); return; }
+
+  const res = await fetch("/api/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: val })
+  });
+  const data = await res.json();
+  suggestions.innerHTML = "";
+  data.forEach(d => {
+    const div = document.createElement("div");
+    div.className = "suggestion-item";
+    div.innerHTML = `<div class="suggestion-code">${d.code}</div><div class="suggestion-text">${d.text}</div>`;
+    div.onclick = () => {
+      input.value = d.code;
+      suggestions.classList.remove("active");
+      showResult(d);
+    };
+    suggestions.appendChild(div);
+  });
+  suggestions.classList.add("active");
+});
+
+// Show result + AI call
+async function showResult(data) {
+  try {
+    const res = await fetch("/api/ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: data.text })
+    });
+    const ai = await res.json();
+    alert(`${data.code}\n${data.text}\n\n${ai.reply}`);
+  } catch {
+    alert(`${data.code}\n${data.text}`);
+  }
+}
+</script>
         
         .hero::before{
             content:'';
