@@ -1,98 +1,2632 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>Garage Wisdom</title>
-
-<link rel="stylesheet" href="ui.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garage Wisdom - 50+ Real Fixes, Real Savings</title>
+    <meta name="description" content="Real mechanic fixes for check engine lights. No $1200 dealer quotes, just what actually worked. 50+ verified repairs with step-by-step guides.">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --orange:#ff4500;
+            --orange-dark:#cc3700;
+            --steel:#2a2d35;
+            --dark:#1a1c21;
+            --darker:#121418;
+            --text:#e8eaed;
+            --text-dim:#9aa0a6;
+            --accent:#ffd700;
+            --success:#00c851;
+            --cashapp:#00d632;
+        }
+        
+        body{
+            font-family:'Roboto Condensed',sans-serif;
+            background:var(--darker);
+            color:var(--text);
+            line-height:1.6;
+            overflow-x:hidden;
+        }
+        
+        h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.02em}
+        
+        .hero{
+            position:relative;
+            height:70vh;
+            min-height:500px;
+            background:linear-gradient(180deg,rgba(18,20,24,0.3) 0%,rgba(18,20,24,0.9) 100%),
+                       url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&q=80') center/cover;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:2rem;
+            border-bottom:4px solid var(--orange);
+        }
+        
+        .hero::before{
+            content:'';
+            position:absolute;
+            top:0;left:0;right:0;bottom:0;
+            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,69,0,0.1)"/></svg>') repeat;
+            background-size:50px 50px;
+            pointer-events:none;
+        }
+        
+        .hero-content{position:relative;z-index:2;max-width:900px;width:100%}
+        
+        .hero-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            background:rgba(255,69,0,0.2);
+            border:1px solid var(--orange);
+            padding:0.5rem 1rem;
+            border-radius:4px;
+            font-size:0.85rem;
+            font-weight:700;
+            text-transform:uppercase;
+            margin-bottom:1.5rem;
+            color:var(--orange);
+        }
+        
+        .hero h1{
+            font-size:clamp(2.5rem,8vw,5rem);
+            font-weight:700;
+            line-height:1;
+            margin-bottom:1rem;
+            text-shadow:0 4px 20px rgba(0,0,0,0.8);
+            background:linear-gradient(135deg,#fff 0%,var(--text-dim) 100%);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        
+        .hero h1 span{color:var(--orange);-webkit-text-fill-color:var(--orange)}
+        
+        .hero p{
+            font-size:1.3rem;
+            color:var(--text-dim);
+            max-width:600px;
+            margin:0 auto 2rem;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        
+        .search-container{
+            width:100%;
+            max-width:700px;
+            position:relative;
+            margin:0 auto;
+        }
+        
+        .search-box{
+            width:100%;
+            position:relative;
+        }
+        
+        .search-box input{
+            width:100%;
+            padding:1.25rem 1.5rem 1.25rem 3.5rem;
+            font-size:1.1rem;
+            border:2px solid rgba(255,255,255,0.1);
+            border-radius:8px;
+            background:rgba(0,0,0,0.6);
+            color:var(--text);
+            font-family:'Roboto Condensed',sans-serif;
+            backdrop-filter:blur(10px);
+        }
+        
+        .search-box::before{
+            content:'🔍';
+            position:absolute;
+            left:1rem;
+            top:50%;
+            transform:translateY(-50%);
+            font-size:1.2rem;
+            opacity:0.5;
+        }
+        
+        .search-box input:focus{
+            outline:none;
+            border-color:var(--orange);
+            box-shadow:0 0 20px rgba(255,69,0,0.3);
+        }
+        
+        .code-filter-bar{
+            display:flex;
+            gap:0.5rem;
+            margin-top:1rem;
+            flex-wrap:wrap;
+            justify-content:center;
+            padding:0 1rem;
+        }
+        
+        .code-btn{
+            background:rgba(255,69,0,0.2);
+            border:2px solid var(--orange);
+            color:var(--orange);
+            padding:0.6rem 1.2rem;
+            border-radius:6px;
+            font-family:'Oswald',sans-serif;
+            font-size:0.95rem;
+            font-weight:700;
+            cursor:pointer;
+            transition:all 0.3s;
+            text-transform:uppercase;
+        }
+        
+        .code-btn:hover, .code-btn.active{
+            background:var(--orange);
+            color:#fff;
+            transform:translateY(-2px);
+        }
+        
+        .search-suggestions{
+            position:absolute;
+            top:100%;
+            left:0;
+            right:0;
+            background:var(--dark);
+            border:1px solid rgba(255,255,255,0.1);
+            border-top:none;
+            border-radius:0 0 8px 8px;
+            max-height:400px;
+            overflow-y:auto;
+            display:none;
+            z-index:100;
+            text-align:left;
+        }
+        
+        .search-suggestions.active{display:block}
+        
+        .suggestion-item{
+            padding:0.75rem 1rem;
+            cursor:pointer;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+        }
+        
+        .suggestion-item:hover{
+            background:rgba(255,69,0,0.1);
+        }
+        
+        .suggestion-code{
+            background:var(--orange);
+            color:#fff;
+            padding:0.25rem 0.5rem;
+            border-radius:4px;
+            font-size:0.75rem;
+            font-weight:700;
+            min-width:60px;
+            text-align:center;
+        }
+        
+        .suggestion-text{
+            font-size:0.9rem;
+            flex:1;
+        }
+        
+        .suggestion-type{
+            font-size:0.75rem;
+            color:var(--text-dim);
+            text-transform:uppercase;
+        }
+        
+        .quick-tags{
+            display:flex;
+            gap:0.5rem;
+            margin-top:1rem;
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+        
+        .quick-tag{
+            background:rgba(255,255,255,0.1);
+            border:1px solid rgba(255,255,255,0.2);
+            color:var(--text-dim);
+            padding:0.4rem 1rem;
+            border-radius:20px;
+            font-size:0.85rem;
+            cursor:pointer;
+            transition:all 0.3s;
+        }
+        
+        .quick-tag:hover{
+            background:var(--orange);
+            border-color:var(--orange);
+            color:#fff;
+        }
+        
+        .nav{
+            position:fixed;
+            top:0;left:0;right:0;
+            background:linear-gradient(180deg,rgba(18,20,24,0.95) 0%,transparent 100%);
+            padding:1rem 2rem;
+            z-index:1000;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        
+        .logo{
+            font-family:'Oswald',sans-serif;
+            font-size:1.5rem;
+            font-weight:700;
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+            text-transform:uppercase;
+            cursor:pointer;
+        }
+        
+        .logo-icon{
+            width:40px;
+            height:40px;
+            background:var(--orange);
+            border-radius:4px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:1.5rem;
+            transform:skewX(-10deg);
+        }
+        
+        .nav-links{
+            display:flex;
+            gap:2rem;
+            list-style:none;
+        }
+        
+        .nav-links a{
+            color:var(--text);
+            text-decoration:none;
+            font-weight:700;
+            text-transform:uppercase;
+            font-size:0.9rem;
+            letter-spacing:0.05em;
+            opacity:0.8;
+            transition:all 0.3s;
+            position:relative;
+            cursor:pointer;
+        }
+        
+        .nav-links a:hover{opacity:1;color:var(--orange)}
+        
+        .nav-links a::after{
+            content:'';
+            position:absolute;
+            bottom:-5px;left:0;
+            width:0;height:2px;
+            background:var(--orange);
+            transition:width 0.3s;
+        }
+        
+        .nav-links a:hover::after{width:100%}
+        
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            background:var(--dark);
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+        
+        .stat{
+            padding:2rem 1rem;
+            text-align:center;
+            border-right:1px solid rgba(255,255,255,0.05);
+        }
+        
+        .stat:last-child{border-right:none}
+        
+        .stat-number{
+            font-family:'Oswald',sans-serif;
+            font-size:2.5rem;
+            font-weight:700;
+            color:var(--orange);
+            line-height:1;
+        }
+        
+        .stat-label{
+            font-size:0.85rem;
+            color:var(--text-dim);
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            margin-top:0.5rem;
+        }
+        
+        .categories{
+            padding:3rem 2rem;
+            background:var(--steel);
+        }
+        
+        .section-header{
+            text-align:center;
+            margin-bottom:2rem;
+        }
+        
+        .section-header h2{
+            font-size:2rem;
+            margin-bottom:0.5rem;
+        }
+        
+        .section-header p{color:var(--text-dim)}
+        
+        .cat-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+            gap:1.5rem;
+            max-width:1200px;
+            margin:0 auto;
+        }
+        
+        .cat-card{
+            position:relative;
+            height:200px;
+            border-radius:8px;
+            overflow:hidden;
+            cursor:pointer;
+            transition:transform 0.3s;
+            border:2px solid transparent;
+        }
+        
+        .cat-card:hover{
+            transform:translateY(-5px);
+            border-color:var(--orange);
+        }
+        
+        .cat-card img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            filter:brightness(0.6);
+            transition:filter 0.3s;
+        }
+        
+        .cat-card:hover img{filter:brightness(0.8)}
+        
+        .cat-overlay{
+            position:absolute;
+            bottom:0;left:0;right:0;
+            padding:1.5rem;
+            background:linear-gradient(transparent,rgba(0,0,0,0.9));
+        }
+        
+        .cat-code{
+            font-family:'Oswald',sans-serif;
+            font-size:1.5rem;
+            color:var(--orange);
+            font-weight:700;
+        }
+        
+        .cat-name{
+            font-size:0.9rem;
+            color:var(--text-dim);
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        
+        .featured{
+            padding:3rem 2rem;
+            background:var(--darker);
+        }
+        
+        .story-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+            gap:1.5rem;
+            max-width:1400px;
+            margin:0 auto;
+        }
+        
+        .story-card{
+            background:var(--dark);
+            border-radius:8px;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,0.05);
+            transition:all 0.3s;
+            cursor:pointer;
+        }
+        
+        .story-card:hover{
+            transform:translateY(-5px);
+            border-color:var(--orange);
+            box-shadow:0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .story-image{
+            height:180px;
+            position:relative;
+            overflow:hidden;
+        }
+        
+        .story-image img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:transform 0.3s;
+        }
+        
+        .story-card:hover .story-image img{transform:scale(1.1)}
+        
+        .story-badge{
+            position:absolute;
+            top:1rem;left:1rem;
+            background:var(--orange);
+            color:#fff;
+            padding:0.25rem 0.75rem;
+            border-radius:4px;
+            font-size:0.85rem;
+            font-weight:700;
+            font-family:'Oswald',sans-serif;
+        }
+        
+        .story-content{padding:1.5rem}
+        
+        .story-meta{
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+            margin-bottom:1rem;
+        }
+        
+        .avatar{
+            width:36px;
+            height:36px;
+            border-radius:50%;
+            background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            font-size:0.9rem;
+        }
+        
+        .author-info h4{font-size:0.95rem;margin-bottom:0.1rem}
+        .author-info p{font-size:0.8rem;color:var(--text-dim)}
+        
+        .story-title{
+            font-family:'Oswald',sans-serif;
+            font-size:1.25rem;
+            margin-bottom:0.75rem;
+            line-height:1.3;
+        }
+        
+        .story-desc{
+            color:var(--text-dim);
+            font-size:0.95rem;
+            margin-bottom:1rem;
+            display:-webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient:vertical;
+            overflow:hidden;
+        }
+        
+        .story-footer{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding-top:1rem;
+            border-top:1px solid rgba(255,255,255,0.05);
+        }
+        
+        .savings{
+            color:var(--success);
+            font-weight:700;
+            font-size:1.1rem;
+        }
+        
+        .success-rate{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            color:var(--text-dim);
+            font-size:0.9rem;
+        }
+        
+        .image-banner{
+            height:400px;
+            background:linear-gradient(90deg,rgba(18,20,24,0.95) 0%,rgba(18,20,24,0.6) 50%,rgba(18,20,24,0.3) 100%),
+                       url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=1920&q=80') center/cover;
+            display:flex;
+            align-items:center;
+            padding:0 10%;
+            position:relative;
+        }
+        
+        .banner-content{
+            max-width:600px;
+            position:relative;
+            z-index:2;
+        }
+        
+        .banner-content h2{
+            font-size:3rem;
+            margin-bottom:1rem;
+            line-height:1.1;
+        }
+        
+        .banner-content p{
+            font-size:1.2rem;
+            color:var(--text-dim);
+            margin-bottom:2rem;
+        }
+        
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:0.75rem;
+            background:var(--orange);
+            color:#fff;
+            padding:1rem 2rem;
+            border-radius:4px;
+            text-decoration:none;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+            border:none;
+            cursor:pointer;
+            transition:all 0.3s;
+            font-family:'Roboto Condensed',sans-serif;
+            font-size:1rem;
+        }
+        
+        .btn:hover{
+            background:var(--orange-dark);
+            transform:translateY(-2px);
+            box-shadow:0 10px 30px rgba(255,69,0,0.3);
+        }
+        
+        .btn-outline{
+            background:transparent;
+            border:2px solid var(--orange);
+            margin-left:1rem;
+        }
+        
+        .btn-outline:hover{background:var(--orange)}
+        
+        .btn-cashapp{
+            background:var(--cashapp);
+            color:#000;
+        }
+        
+        .btn-cashapp:hover{
+            background:#00b82c;
+            box-shadow:0 10px 30px rgba(0,214,50,0.3);
+        }
+        
+        .offroad-banner{
+            height:400px;
+            background:linear-gradient(270deg,rgba(18,20,24,0.95) 0%,rgba(18,20,24,0.6) 50%,rgba(18,20,24,0.3) 100%),
+                       url('https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=1920&q=80') center/cover;
+            display:flex;
+            align-items:center;
+            justify-content:flex-end;
+            padding:0 10%;
+        }
+        
+        .truck-banner{
+            height:400px;
+            background:linear-gradient(180deg,rgba(18,20,24,0.8) 0%,rgba(18,20,24,0.4) 100%),
+                       url('https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=1920&q=80') center/cover;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            padding:2rem;
+        }
+        
+        .donate-section{
+            padding:4rem 2rem;
+            background:linear-gradient(135deg,rgba(0,214,50,0.05),rgba(255,69,0,0.05));
+            text-align:center;
+            border-top:1px solid rgba(255,255,255,0.05);
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+        
+        .donate-section h2{
+            font-size:2.5rem;
+            margin-bottom:1rem;
+        }
+        
+        .donate-section p{
+            color:var(--text-dim);
+            max-width:600px;
+            margin:0 auto 2rem;
+            font-size:1.1rem;
+        }
+        
+        .donate-buttons{
+            display:flex;
+            justify-content:center;
+            gap:1rem;
+            flex-wrap:wrap;
+        }
+        
+        .cashapp-tag{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            background:rgba(0,214,50,0.1);
+            border:2px solid var(--cashapp);
+            color:var(--cashapp);
+            padding:1rem 2rem;
+            border-radius:4px;
+            font-family:'Oswald',sans-serif;
+            font-size:1.2rem;
+            font-weight:700;
+            margin-top:1rem;
+        }
+        
+        .modal{
+            display:none;
+            position:fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:rgba(0,0,0,0.9);
+            z-index:2000;
+            justify-content:center;
+            align-items:center;
+            padding:2rem;
+            overflow-y:auto;
+        }
+        
+        .modal.active{display:flex}
+        
+        .modal-content{
+            background:var(--dark);
+            border-radius:8px;
+            max-width:600px;
+            width:100%;
+            border:1px solid rgba(255,255,255,0.1);
+            max-height:90vh;
+            overflow-y:auto;
+        }
+        
+        .modal-header{
+            padding:1.5rem;
+            border-bottom:1px solid rgba(255,255,255,0.1);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:var(--steel);
+        }
+        
+        .modal-header h2{font-size:1.5rem}
+        
+        .close-btn{
+            background:none;
+            border:none;
+            color:var(--text);
+            font-size:2rem;
+            cursor:pointer;
+            opacity:0.6;
+            transition:opacity 0.3s;
+        }
+        
+        .close-btn:hover{opacity:1;color:var(--orange)}
+        
+        .modal-body{padding:1.5rem}
+        
+        .form-group{margin-bottom:1.5rem}
+        
+        .form-group label{
+            display:block;
+            margin-bottom:0.5rem;
+            font-weight:700;
+            text-transform:uppercase;
+            font-size:0.9rem;
+            color:var(--text-dim);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select{
+            width:100%;
+            padding:0.75rem 1rem;
+            background:rgba(0,0,0,0.3);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:4px;
+            color:var(--text);
+            font-family:'Roboto Condensed',sans-serif;
+            font-size:1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus{
+            outline:none;
+            border-color:var(--orange);
+        }
+        
+        .form-group textarea{
+            min-height:120px;
+            resize:vertical;
+        }
+        
+        .detail-view{
+            display:none;
+            background:var(--darker);
+            min-height:100vh;
+        }
+        
+        .detail-view.active{display:block}
+        
+        .detail-hero{
+            height:300px;
+            position:relative;
+            background:linear-gradient(180deg,transparent 0%,var(--darker) 100%),
+                       url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1920&q=80') center/cover;
+        }
+        
+        .detail-content{
+            max-width:800px;
+            margin:-100px auto 0;
+            padding:0 2rem 3rem;
+            position:relative;
+            z-index:2;
+        }
+        
+        .detail-card{
+            background:var(--dark);
+            border-radius:8px;
+            padding:2rem;
+            border:1px solid rgba(255,255,255,0.05);
+            margin-bottom:1.5rem;
+        }
+        
+        .detail-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:start;
+            margin-bottom:1.5rem;
+            flex-wrap:wrap;
+            gap:1rem;
+        }
+        
+        .detail-code{
+            background:var(--orange);
+            color:#fff;
+            padding:0.5rem 1rem;
+            border-radius:4px;
+            font-family:'Oswald',sans-serif;
+            font-size:1.25rem;
+            font-weight:700;
+        }
+        
+        .detail-title{
+            font-size:2rem;
+            margin:1rem 0;
+            line-height:1.2;
+        }
+        
+        .detail-section h3{
+            color:var(--orange);
+            font-size:1.1rem;
+            margin-bottom:1rem;
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+        }
+        
+        .step{
+            display:flex;
+            gap:1rem;
+            margin-bottom:1rem;
+            padding:1rem;
+            background:rgba(0,0,0,0.3);
+            border-radius:4px;
+            border-left:3px solid var(--orange);
+        }
+        
+        .step-num{
+            width:30px;
+            height:30px;
+            background:var(--orange);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            flex-shrink:0;
+        }
+        
+        .cost-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:1rem;
+            margin-top:1rem;
+        }
+        
+        .cost-item{
+            text-align:center;
+            padding:1rem;
+            background:rgba(0,0,0,0.3);
+            border-radius:4px;
+        }
+        
+        .cost-value{
+            font-family:'Oswald',sans-serif;
+            font-size:1.75rem;
+            font-weight:700;
+            color:var(--success);
+        }
+        
+        .cost-label{
+            font-size:0.85rem;
+            color:var(--text-dim);
+            text-transform:uppercase;
+        }
+        
+        .back-btn{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            color:var(--text);
+            text-decoration:none;
+            margin-bottom:1rem;
+            font-weight:700;
+            text-transform:uppercase;
+            cursor:pointer;
+            background:none;
+            border:none;
+            font-size:1rem;
+        }
+        
+        .back-btn:hover{color:var(--orange)}
+        
+        .no-results{
+            text-align:center;
+            padding:3rem;
+            color:var(--text-dim);
+        }
+        
+        .no-results h3{
+            color:var(--orange);
+            margin-bottom:1rem;
+        }
+        
+        .search-results-info{
+            background:var(--steel);
+            padding:1rem;
+            border-radius:8px;
+            margin-bottom:1.5rem;
+            text-align:center;
+        }
+        
+        .code-info-card{
+            background:linear-gradient(135deg,rgba(255,69,0,0.1),rgba(255,69,0,0.05));
+            border:2px solid var(--orange);
+            border-radius:8px;
+            padding:2rem;
+            margin-bottom:2rem;
+        }
+        
+        .code-info-card h3{
+            color:var(--orange);
+            font-size:1.5rem;
+            margin-bottom:1rem;
+        }
+        
+        .code-info-card p{
+            margin-bottom:1rem;
+            line-height:1.6;
+        }
+        
+        .related-fixes{
+            margin-top:1.5rem;
+        }
+        
+        .footer{
+            background:var(--dark);
+            padding:3rem 2rem;
+            text-align:center;
+            border-top:1px solid rgba(255,255,255,0.05);
+        }
+        
+        .footer-logo{
+            font-family:'Oswald',sans-serif;
+            font-size:2rem;
+            margin-bottom:1rem;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:0.75rem;
+        }
+        
+        .footer p{color:var(--text-dim);margin-bottom:2rem}
+        
+        .footer-links{
+            display:flex;
+            justify-content:center;
+            gap:2rem;
+            margin-bottom:2rem;
+            flex-wrap:wrap;
+        }
+        
+        .footer-links a{
+            color:var(--text);
+            text-decoration:none;
+            opacity:0.7;
+            transition:opacity 0.3s;
+        }
+        
+        .footer-links a:hover{opacity:1;color:var(--orange)}
+        
+        .social-links{
+            display:flex;
+            justify-content:center;
+            gap:1.5rem;
+            margin-bottom:2rem;
+        }
+        
+        .social-links a{
+            width:40px;
+            height:40px;
+            background:rgba(255,255,255,0.05);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--text);
+            text-decoration:none;
+            transition:all 0.3s;
+        }
+        
+        .social-links a:hover{
+            background:var(--orange);
+            transform:translateY(-3px);
+        }
+        
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .stats{grid-template-columns:repeat(2,1fr)}
+            .stat{border-bottom:1px solid rgba(255,255,255,0.05)}
+            .hero h1{font-size:2.5rem}
+            .banner-content h2{font-size:2rem}
+            .story-grid{grid-template-columns:1fr}
+            .cost-grid{grid-template-columns:1fr}
+            .donate-buttons{flex-direction:column;align-items:center}
+            .code-filter-bar{gap:0.4rem}
+            .code-btn{padding:0.5rem 0.8rem;font-size:0.85rem}
+        }
+    </style>
 </head>
-
 <body>
+    <nav class="nav">
+        <div class="logo" onclick="showHome()">
+            <div class="logo-icon">🔧</div>
+            <span>Garage Wisdom</span>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="showHome()">Browse Fixes</a></li>
+            <li><a onclick="openModal()">Share Your Fix</a></li>
+            <li><a href="#donate">Support</a></li>
+        </ul>
+    </nav>
 
-<header>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>⚡</span>
+                <span>50+ Real Fixes • $100K+ Saved</span>
+            </div>
+            <h1>Real Fixes for <span>Real Rides</span></h1>
+            <p>Search any OBD code (P0XXX, P1XXX, B0XXX, etc.) or symptom</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Enter code: P0420, P1781, B1342..." id="searchInput" autocomplete="off">
+                </div>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+                
+                <!-- Code Filter Bar - Quick access to common codes -->
+                <div class="code-filter-bar">
+                    <button class="code-btn" onclick="quickCodeSearch('P0420')" title="Catalytic Converter">P0420</button>
+                    <button class="code-btn" onclick="quickCodeSearch('P0300')" title="Random Misfire">P0300</button>
+                    <button class="code-btn" onclick="quickCodeSearch('P0171')" title="System Too Lean">P0171</button>
+                    <button class="code-btn" onclick="quickCodeSearch('P0455')" title="EVAP Leak">P0455</button>
+                    <button class="code-btn" onclick="quickCodeSearch('O2')" title="Oxygen Sensors">O2</button>
+                    <button class="code-btn" onclick="quickCodeSearch('P0401')" title="EGR System">P0401</button>
+                    <button class="code-btn" onclick="quickCodeSearch('TRANS')" title="Transmission">TRANS</button>
+                    <button class="code-btn" onclick="clearFilter()" title="Show All">ALL</button>
+                </div>
+                
+                <!-- Quick Tags for common searches -->
+                <div class="quick-tags">
+                    <span class="quick-tag" onclick="quickSearch('Honda')">Honda</span>
+                    <span class="quick-tag" onclick="quickSearch('Ford')">Ford</span>
+                    <span class="quick-tag" onclick="quickSearch('Toyota')">Toyota</span>
+                    <span class="quick-tag" onclick="quickSearch('misfire')">Misfire</span>
+                    <span class="quick-tag" onclick="quickSearch('sensor')">Sensor</span>
+                    <span class="quick-tag" onclick="quickSearch('leak')">Leak</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h1>Garage Wisdom</h1>
-<p class="tagline">AI powered diagnostics built for real garages</p>
+    <div id="mainContent">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="statTotal">50</div>
+                <div class="stat-label">Verified Fixes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">5,000+</div>
+                <div class="stat-label">Trucks Saved</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">$100K+</div>
+                <div class="stat-label">Dealer Costs Avoided</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
 
-</header>
+        <section class="categories">
+            <div class="section-header">
+                <h2>Browse by Code</h2>
+                <p>Click a category to see fixes that actually worked</p>
+            </div>
+            <div class="cat-grid">
+                <div class="cat-card" onclick="filterCategory('p0420')">
+                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&q=80" alt="Exhaust">
+                    <div class="cat-overlay">
+                        <div class="cat-code">P0420</div>
+                        <div class="cat-name">Catalytic Converter</div>
+                    </div>
+                </div>
+                <div class="cat-card" onclick="filterCategory('p0300')">
+                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80" alt="Engine">
+                    <div class="cat-overlay">
+                        <div class="cat-code">P0300</div>
+                        <div class="cat-name">Random Misfire</div>
+                    </div>
+                </div>
+                <div class="cat-card" onclick="filterCategory('p0171')">
+                    <img src="https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=400&q=80" alt="Intake">
+                    <div class="cat-overlay">
+                        <div class="cat-code">P0171</div>
+                        <div class="cat-name">System Too Lean</div>
+                    </div>
+                </div>
+                <div class="cat-card" onclick="filterCategory('p0455')">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Fuel">
+                    <div class="cat-overlay">
+                        <div class="cat-code">P0455</div>
+                        <div class="cat-name">EVAP Leak</div>
+                    </div>
+                </div>
+                <div class="cat-card" onclick="filterCategory('o2')">
+                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400&q=80" alt="Sensors">
+                    <div class="cat-overlay">
+                        <div class="cat-code">O2</div>
+                        <div class="cat-name">Oxygen Sensors</div>
+                    </div>
+                </div>
+                <div class="cat-card" onclick="filterCategory('egr')">
+                    <img src="https://images.unsplash.com/photo-1503376763036-066120622c74?w=400&q=80" alt="EGR">
+                    <div class="cat-overlay">
+                        <div class="cat-code">P0401</div>
+                        <div class="cat-name">EGR System</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section class="featured">
+            <div class="section-header">
+                <h2 id="gridTitle">Latest Battle-Tested Fixes</h2>
+                <p id="gridSubtitle">Stories from the garage, not the dealership</p>
+            </div>
+            <div class="search-results-info" id="searchResultsInfo" style="display:none"></div>
+            <div id="codeInfoDisplay"></div>
+            <div class="story-grid" id="storyGrid"></div>
+            <div class="no-results" id="noResults" style="display:none">
+                <h3>No fixes found</h3>
+                <p>Try clicking one of the code buttons above or search for: <strong>P0420</strong>, <strong>misfire</strong>, <strong>Honda</strong>, <strong>coil</strong>, <strong>leak</strong>, or <strong>sensor</strong></p>
+                <button class="btn" onclick="clearFilter()" style="margin-top:1rem">Show All Fixes</button>
+            </div>
+        </section>
 
-<section class="hero">
+        <section class="image-banner">
+            <div class="banner-content">
+                <h2>Got a Check Engine Light?</h2>
+                <p>Don't panic. Don't pay $800 for a $50 fix. Search our database of real repairs from real mechanics who've been there.</p>
+                <button class="btn" onclick="document.getElementById('searchInput').focus()">
+                    <span>🔍</span>
+                    <span>Find Your Fix</span>
+                </button>
+                <button class="btn btn-outline" onclick="openModal()">
+                    <span>✍️</span>
+                    <span>Share Your Story</span>
+                </button>
+            </div>
+        </section>
 
-<img src="images/car-hero.jpg">
+        <section class="featured">
+            <div class="section-header">
+                <h2>Most Popular This Week</h2>
+                <p>Fixes that saved owners thousands</p>
+            </div>
+            <div class="story-grid" id="popularGrid"></div>
+        </section>
 
-<div class="vehicleInfo">
+        <section class="offroad-banner">
+            <div class="banner-content" style="text-align:right">
+                <h2>Built for Trucks,<br>Not Just Priuses</h2>
+                <p>From lifted F-250s to trail-rigged Jeeps. We cover the codes that matter when you're 50 miles from pavement.</p>
+                <button class="btn" onclick="filterCategory('p0300')">
+                    <span>🚙</span>
+                    <span>Truck Fixes</span>
+                </button>
+            </div>
+        </section>
 
-<h2>Your Vehicle</h2>
-<p>Live diagnostics and repair insight</p>
+        <section class="donate-section" id="donate">
+            <h2>Keep the Garage Open</h2>
+            <p>Every donation helps us add more fixes, keep the site running, and stick it to the dealers. If we saved you money, throw us a few bucks.</p>
+            <div class="donate-buttons">
+                <a href="https://cash.app/$sw3895" target="_blank" class="btn btn-cashapp">
+                    <span>💵</span>
+                    <span>Cash App $5</span>
+                </a>
+                <a href="https://cash.app/$sw3895" target="_blank" class="btn btn-cashapp">
+                    <span>💵</span>
+                    <span>Cash App $10</span>
+                </a>
+                <a href="https://cash.app/$sw3895" target="_blank" class="btn btn-cashapp">
+                    <span>💵</span>
+                    <span>Cash App $20</span>
+                </a>
+            </div>
+            <div class="cashapp-tag">
+                <span>📱</span>
+                <span>$sw3895</span>
+            </div>
+            <p style="margin-top:1.5rem;font-size:0.9rem;color:var(--text-dim)">Or scan with your Cash App • Every dollar keeps us independent</p>
+        </section>
 
-</div>
+        <section class="truck-banner">
+            <div style="max-width:800px">
+                <h2 style="font-size:3rem;margin-bottom:1rem">Join the Brotherhood</h2>
+                <p style="font-size:1.3rem;color:var(--text-dim);margin-bottom:2rem">50 fixes and growing. Every story saves someone from a dealer's wallet.</p>
+                <button class="btn" onclick="openModal()" style="font-size:1.2rem;padding:1.25rem 3rem">
+                    <span>🔧</span>
+                    <span>Add Your Fix</span>
+                </button>
+            </div>
+        </section>
+    </div>
 
-</section>
+    <div class="detail-view" id="detailView">
+        <div class="detail-hero" id="detailHero"></div>
+        <div class="detail-content">
+            <button class="back-btn" onclick="showHome()">
+                <span>←</span>
+                <span>Back to Fixes</span>
+            </button>
+            
+            <div class="detail-card">
+                <div class="detail-header">
+                    <div>
+                        <span class="detail-code" id="detailCode">P0420</span>
+                        <h1 class="detail-title" id="detailTitle">Loading...</h1>
+                        <p style="color:var(--text-dim)" id="detailVehicle">Loading...</p>
+                    </div>
+                </div>
+            </div>
 
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>⚠️ The Problem</h3>
+                    <p id="detailProblem">Loading...</p>
+                </div>
+            </div>
 
-<section class="dash">
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>🕳️ The Rabbit Hole</h3>
+                    <p style="margin-bottom:1rem;color:var(--text-dim)">What didn't work (so you don't waste time):</p>
+                    <div id="detailRabbitHole"></div>
+                </div>
+            </div>
 
-<div class="gaugeCard">
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>🔧 The Fix That Worked</h3>
+                    <div id="detailFix"></div>
+                </div>
+            </div>
 
-<h3>RPM</h3>
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>💰 The Damage</h3>
+                    <div class="cost-grid">
+                        <div class="cost-item">
+                            <div class="cost-value" id="detailYourCost">$0</div>
+                            <div class="cost-label">Your Cost</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-value" style="color:var(--orange)" id="detailDealerCost">$0</div>
+                            <div class="cost-label">Dealer Quote</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-value" style="color:var(--accent)" id="detailSaved">$0</div>
+                            <div class="cost-label">You Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<canvas id="rpmChart"></canvas>
+            <div class="detail-card">
+                <div class="detail-section">
+                    <h3>✅ The Verdict</h3>
+                    <p id="detailVerdict">Loading...</p>
+                    <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,69,0,0.1);border-left:4px solid var(--orange);border-radius:4px" id="detailProTip"></div>
+                </div>
+            </div>
 
-</div>
+            <div style="display:flex;gap:1rem;margin-top:2rem">
+                <button class="btn" style="flex:1" onclick="markHelpful()">
+                    <span>👍</span>
+                    <span id="helpfulText">This Fixed My Car</span>
+                </button>
+                <button class="btn btn-outline" style="flex:1">
+                    <span>💬</span>
+                    <span>Ask a Question</span>
+                </button>
+            </div>
 
+            <div class="detail-card" style="text-align:center;margin-top:2rem;background:linear-gradient(135deg,rgba(0,214,50,0.1),rgba(255,69,0,0.1))">
+                <h3 style="color:var(--cashapp);margin-bottom:1rem">Did This Save You Money?</h3>
+                <p style="margin-bottom:1rem">Throw us a few bucks and help keep the garage open</p>
+                <a href="https://cash.app/$sw3895" target="_blank" class="btn btn-cashapp">
+                    <span>💵</span>
+                    <span>Cash App $sw3895</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
-<div class="gaugeCard">
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share Your Battle Story</h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="submitStory(event)">
+                    <div class="form-group">
+                        <label>DTC Code *</label>
+                        <input type="text" placeholder="P0420, P0300, etc." required id="submitCode">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle *</label>
+                        <input type="text" placeholder="2004 Honda Accord 2.4L" required id="submitVehicle">
+                    </div>
+                    <div class="form-group">
+                        <label>The Problem *</label>
+                        <textarea placeholder="What happened? What did the shop want to charge you?" required id="submitProblem"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>What Didn't Work</label>
+                        <textarea placeholder="What did you try that failed? Save others the trouble." id="submitFailed"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>The Fix That Worked *</label>
+                        <textarea placeholder="Step by step. What parts? What tools? How long?" required id="submitFix"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Costs</label>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+                            <input type="number" placeholder="Your cost" id="submitCost">
+                            <input type="number" placeholder="Shop quote" id="submitQuote">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Name/Shop</label>
+                        <input type="text" placeholder="Mike's Garage" id="submitAuthor">
+                    </div>
+                    <button type="submit" class="btn" style="width:100%">
+                        <span>🔧</span>
+                        <span>Post Your Fix</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-<h3>Coolant Temp</h3>
+    <footer class="footer" id="mainFooter">
+        <div class="footer-logo">
+            <span>🔧</span>
+            <span>Garage Wisdom</span>
+        </div>
+        <p>Built by gearheads, for gearheads. No dealers. No bullshit.</p>
+        
+        <div class="footer-links">
+            <a href="#" onclick="showHome()">Browse Fixes</a>
+            <a href="#" onclick="openModal()">Submit Story</a>
+            <a href="#donate">Support $sw3895</a>
+            <a href="mailto:contact@garagewisdom.com">Contact</a>
+        </div>
+        
+        <div class="social-links">
+            <a href="#">📘</a>
+            <a href="#">🐦</a>
+            <a href="#">📸</a>
+            <a href="#">▶️</a>
+        </div>
+        
+        <p style="font-size:0.85rem">© 2024 Garage Wisdom. All fixes verified by real wrench time.</p>
+        <p style="font-size:0.75rem;color:var(--text-dim);margin-top:0.5rem">Cash App: $sw3895 • Help us reach 100 fixes</p>
+    </footer>
 
-<canvas id="tempChart"></canvas>
+    <script>
+        // EXTENDED OBD-II CODE DATABASE
+        const obdCodes = {
+            // Powertrain Codes (P0XXX)
+            'P0100': { desc: 'Mass Air Flow Circuit Malfunction', system: 'Air/Fuel', common: 'MAF sensor, wiring' },
+            'P0101': { desc: 'Mass Air Flow Circuit Range/Performance', system: 'Air/Fuel', common: 'Dirty MAF, air leak' },
+            'P0102': { desc: 'Mass Air Flow Circuit Low Input', system: 'Air/Fuel', common: 'MAF sensor, wiring' },
+            'P0103': { desc: 'Mass Air Flow Circuit High Input', system: 'Air/Fuel', common: 'MAF sensor, wiring' },
+            'P0110': { desc: 'Intake Air Temperature Circuit', system: 'Air/Fuel', common: 'IAT sensor' },
+            'P0115': { desc: 'Engine Coolant Temperature Circuit', system: 'Cooling', common: 'ECT sensor, thermostat' },
+            'P0116': { desc: 'ECT Range/Performance', system: 'Cooling', common: 'Thermostat, coolant level' },
+            'P0120': { desc: 'Throttle Position Sensor Circuit', system: 'Throttle', common: 'TPS sensor' },
+            'P0121': { desc: 'TPS Range/Performance', system: 'Throttle', common: 'TPS sensor, binding' },
+            'P0125': { desc: 'Insufficient Coolant Temperature', system: 'Cooling', common: 'Thermostat stuck open' },
+            'P0130': { desc: 'O2 Sensor Circuit Bank 1 Sensor 1', system: 'Emissions', common: 'O2 sensor, wiring' },
+            'P0131': { desc: 'O2 Sensor Low Voltage Bank 1 Sensor 1', system: 'Emissions', common: 'O2 sensor, exhaust leak' },
+            'P0132': { desc: 'O2 Sensor High Voltage Bank 1 Sensor 1', system: 'Emissions', common: 'O2 sensor, rich condition' },
+            'P0133': { desc: 'O2 Sensor Slow Response Bank 1 Sensor 1', system: 'Emissions', common: 'Lazy O2 sensor' },
+            'P0134': { desc: 'O2 Sensor No Activity Bank 1 Sensor 1', system: 'Emissions', common: 'Dead O2 sensor' },
+            'P0135': { desc: 'O2 Sensor Heater Circuit Bank 1 Sensor 1', system: 'Emissions', common: 'Heater circuit, wiring' },
+            'P0136': { desc: 'O2 Sensor Circuit Bank 1 Sensor 2', system: 'Emissions', common: 'Rear O2 sensor' },
+            'P0137': { desc: 'O2 Sensor Low Voltage Bank 1 Sensor 2', system: 'Emissions', common: 'Rear O2, wiring' },
+            'P0138': { desc: 'O2 Sensor High Voltage Bank 1 Sensor 2', system: 'Emissions', common: 'Rear O2, cat efficiency' },
+            'P0140': { desc: 'O2 Sensor No Activity Bank 1 Sensor 2', system: 'Emissions', common: 'Rear O2 sensor' },
+            'P0141': { desc: 'O2 Sensor Heater Circuit Bank 1 Sensor 2', system: 'Emissions', common: 'Heater circuit' },
+            'P0150': { desc: 'O2 Sensor Circuit Bank 2 Sensor 1', system: 'Emissions', common: 'O2 sensor, V6/V8' },
+            'P0155': { desc: 'O2 Sensor Heater Circuit Bank 2 Sensor 1', system: 'Emissions', common: 'Heater circuit' },
+            'P0160': { desc: 'O2 Sensor Circuit Bank 2 Sensor 2', system: 'Emissions', common: 'Rear O2 sensor' },
+            'P0171': { desc: 'System Too Lean Bank 1', system: 'Air/Fuel', common: 'Vacuum leak, MAF, fuel pressure' },
+            'P0172': { desc: 'System Too Rich Bank 1', system: 'Air/Fuel', common: 'MAF, injectors, fuel pressure' },
+            'P0174': { desc: 'System Too Lean Bank 2', system: 'Air/Fuel', common: 'Vacuum leak, V6/V8' },
+            'P0175': { desc: 'System Too Rich Bank 2', system: 'Air/Fuel', common: 'MAF, injectors' },
+            'P0200': { desc: 'Injector Circuit Malfunction', system: 'Fuel', common: 'Wiring, PCM' },
+            'P0201': { desc: 'Injector Circuit Cylinder 1', system: 'Fuel', common: 'Injector, wiring' },
+            'P0202': { desc: 'Injector Circuit Cylinder 2', system: 'Fuel', common: 'Injector, wiring' },
+            'P0203': { desc: 'Injector Circuit Cylinder 3', system: 'Fuel', common: 'Injector, wiring' },
+            'P0204': { desc: 'Injector Circuit Cylinder 4', system: 'Fuel', common: 'Injector, wiring' },
+            'P0300': { desc: 'Random/Multiple Cylinder Misfire', system: 'Ignition', common: 'Coils, plugs, vacuum leak' },
+            'P0301': { desc: 'Cylinder 1 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0302': { desc: 'Cylinder 2 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0303': { desc: 'Cylinder 3 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0304': { desc: 'Cylinder 4 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0305': { desc: 'Cylinder 5 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0306': { desc: 'Cylinder 6 Misfire', system: 'Ignition', common: 'Coil, plug, injector' },
+            'P0316': { desc: 'Misfire Detected on Startup', system: 'Ignition', common: 'Coils, cold start issue' },
+            'P0325': { desc: 'Knock Sensor Circuit', system: 'Ignition', common: 'Knock sensor, wiring' },
+            'P0330': { desc: 'Knock Sensor 2 Circuit', system: 'Ignition', common: 'Knock sensor' },
+            'P0335': { desc: 'Crankshaft Position Sensor Circuit', system: 'Ignition', common: 'CKP sensor, wiring' },
+            'P0336': { desc: 'Crankshaft Position Sensor Range', system: 'Ignition', common: 'CKP sensor, reluctor' },
+            'P0340': { desc: 'Camshaft Position Sensor Circuit', system: 'Ignition', common: 'CMP sensor, wiring' },
+            'P0341': { desc: 'Camshaft Position Sensor Range', system: 'Ignition', common: 'CMP sensor, timing' },
+            'P0400': { desc: 'EGR Flow Malfunction', system: 'Emissions', common: 'EGR valve, clogged passages' },
+            'P0401': { desc: 'Insufficient EGR Flow', system: 'Emissions', common: 'Clogged EGR, DPFE sensor' },
+            'P0402': { desc: 'Excessive EGR Flow', system: 'Emissions', common: 'Stuck EGR valve' },
+            'P0403': { desc: 'EGR Circuit Malfunction', system: 'Emissions', common: 'Wiring, solenoid' },
+            'P0404': { desc: 'EGR Circuit Range/Performance', system: 'Emissions', common: 'DPFE sensor' },
+            'P0405': { desc: 'EGR Sensor A Circuit Low', system: 'Emissions', common: 'DPFE sensor' },
+            'P0420': { desc: 'Catalyst Efficiency Below Threshold Bank 1', system: 'Emissions', common: 'Cat, O2 sensors, exhaust leak' },
+            'P0430': { desc: 'Catalyst Efficiency Below Threshold Bank 2', system: 'Emissions', common: 'Cat, V6/V8' },
+            'P0440': { desc: 'Evaporative Emission System', system: 'EVAP', common: 'Gas cap, leak' },
+            'P0441': { desc: 'EVAP Incorrect Purge Flow', system: 'EVAP', common: 'Purge valve' },
+            'P0442': { desc: 'EVAP Small Leak Detected', system: 'EVAP', common: 'Gas cap, small leak' },
+            'P0446': { desc: 'EVAP Vent Control Circuit', system: 'EVAP', common: 'Vent valve, wiring' },
+            'P0455': { desc: 'EVAP Large Leak Detected', system: 'EVAP', common: 'Gas cap, vent valve, lines' },
+            'P0456': { desc: 'EVAP Very Small Leak', system: 'EVAP', common: 'Pinhole leak, gas cap' },
+            'P0460': { desc: 'Fuel Level Sensor Circuit', system: 'Fuel', common: 'Fuel sender, wiring' },
+            'P0463': { desc: 'Fuel Level Sensor High Input', system: 'Fuel', common: 'Fuel sender' },
+            'P0500': { desc: 'Vehicle Speed Sensor', system: 'Transmission', common: 'VSS, wiring' },
+            'P0505': { desc: 'Idle Air Control System', system: 'Idle', common: 'IAC valve, vacuum' },
+            'P0506': { desc: 'Idle Control RPM Lower Than Expected', system: 'Idle', common: 'IAC, vacuum leak' },
+            'P0507': { desc: 'Idle Control RPM Higher Than Expected', system: 'Idle', common: 'Vacuum leak, IAC' },
+            'P0560': { desc: 'System Voltage Malfunction', system: 'Electrical', common: 'Battery, alternator' },
+            'P0562': { desc: 'System Voltage Low', system: 'Electrical', common: 'Battery, alternator' },
+            'P0563': { desc: 'System Voltage High', system: 'Electrical', common: 'Alternator, regulator' },
+            'P0600': { desc: 'Serial Communication Link', system: 'PCM', common: 'PCM, wiring' },
+            'P0700': { desc: 'Transmission Control System', system: 'Transmission', common: 'TCM, transmission issue' },
+            'P0705': { desc: 'Transmission Range Sensor Circuit', system: 'Transmission', common: 'Range sensor, neutral safety' },
+            'P0715': { desc: 'Input/Turbine Speed Sensor', system: 'Transmission', common: 'Speed sensor, wiring' },
+            'P0720': { desc: 'Output Speed Sensor Circuit', system: 'Transmission', common: 'Speed sensor' },
+            'P0730': { desc: 'Incorrect Gear Ratio', system: 'Transmission', common: 'Internal transmission' },
+            'P0740': { desc: 'Torque Converter Clutch Circuit', system: 'Transmission', common: 'TCC solenoid' },
+            'P0750': { desc: 'Shift Solenoid A Malfunction', system: 'Transmission', common: 'Solenoid, wiring' },
+            'P0755': { desc: 'Shift Solenoid B Malfunction', system: 'Transmission', common: 'Solenoid, wiring' },
+            'P0760': { desc: 'Shift Solenoid C Malfunction', system: 'Transmission', common: 'Solenoid, wiring' },
+            'P1100': { desc: 'MAF Sensor Intermittent', system: 'Air/Fuel', common: 'MAF, wiring' },
+            'P1130': { desc: 'Lack of HO2S Switch Bank 1 Sensor 1', system: 'Emissions', common: 'O2 sensor, fuel trim' },
+            'P1150': { desc: 'Lack of HO2S Switch Bank 2 Sensor 1', system: 'Emissions', common: 'O2 sensor' },
+            'P1300': { desc: 'Ignitor Circuit', system: 'Ignition', common: 'Igniter, coils' },
+            'P1335': { desc: 'Crankshaft Position Sensor Circuit', system: 'Ignition', common: 'CKP sensor' },
+            'P1345': { desc: 'Cam/Crank Correlation', system: 'Timing', common: 'Timing chain/belt jumped' },
+            'P1400': { desc: 'DPFE Circuit Low', system: 'Emissions', common: 'DPFE sensor, hoses' },
+            'P1401': { desc: 'DPFE Circuit High', system: 'Emissions', common: 'DPFE sensor' },
+            'P1443': { desc: 'EVAP Control System', system: 'EVAP', common: 'Purge valve, canister' },
+            'P1450': { desc: 'Unable to Bleed Fuel Tank Vacuum', system: 'EVAP', common: 'Blockage, vent valve' },
+            'P1500': { desc: 'Vehicle Speed Sensor Intermittent', system: 'Transmission', common: 'VSS, wiring' },
+            'P1510': { desc: 'Idle Air Control Circuit', system: 'Idle', common: 'IAC valve' },
+            'P1600': { desc: 'Loss of KAM Power', system: 'PCM', common: 'Battery disconnect' },
+            'P1633': { desc: 'Keep Alive Memory Voltage Too Low', system: 'PCM', common: 'Battery, PCM' },
+            'P1705': { desc: 'Transmission Range Sensor Circuit', system: 'Transmission', common: 'Range sensor' },
+            'P1780': { desc: 'Transmission Control Switch Circuit', system: 'Transmission', common: 'Overdrive switch' },
+            'P1781': { desc: '4x4 Low Switch Circuit', system: 'Transmission', common: 'Range sensor, 4WD switch' },
+            'P1783': { desc: 'Transmission Overtemp Condition', system: 'Transmission', common: 'Cooling, heavy load' },
+            
+            // Manufacturer Specific (P1XXX)
+            'P1131': { desc: 'Lack of HO2S Switch Ford', system: 'Emissions', common: 'O2 sensor, vacuum leak' },
+            'P1151': { desc: 'Lack of HO2S Switch Ford Bank 2', system: 'Emissions', common: 'O2 sensor' },
+            'P1237': { desc: 'Fuel Pump Secondary Circuit', system: 'Fuel', common: 'Fuel pump, relay' },
+            'P1250': { desc: 'Early Fuel Evaporation Heater', system: 'Emissions', common: 'EFE heater' },
+            'P1285': { desc: 'Cylinder Head Temp Sensor', system: 'Cooling', common: 'CHT sensor' },
+            'P1440': { desc: 'EVAP Purge Valve Stuck Open', system: 'EVAP', common: 'Purge valve' },
+            'P1451': { desc: 'EVAP Canister Vent Solenoid', system: 'EVAP', common: 'Vent valve' },
+            'P1506': { desc: 'Idle Air Control Overspeed', system: 'Idle', common: 'IAC, vacuum leak' },
+            'P1507': { desc: 'Idle Air Control Underspeed', system: 'Idle', common: 'IAC, dirty throttle' },
+            'P1537': { desc: 'Intake Manifold Runner Control', system: 'Air/Fuel', common: 'IMRC, vacuum' },
+            'P1538': { desc: 'Intake Manifold Runner Control Stuck Open', system: 'Air/Fuel', common: 'IMRC' },
+            'P1740': { desc: 'Torque Converter Clutch Solenoid', system: 'Transmission', common: 'TCC solenoid' },
+            'P1744': { desc: 'Torque Converter Clutch Performance', system: 'Transmission', common: 'TCC, converter' },
+            
+            // Body Codes (B0XXX)
+            'B1342': { desc: 'ECU Defective', system: 'Body', common: 'PCM failure' },
+            'B1676': { desc: 'Battery Pack Voltage Out of Range', system: 'Body', common: 'Hybrid battery' },
+            
+            // Network Codes (U0XXX)
+            'U0100': { desc: 'Lost Communication with ECM/PCM', system: 'Network', common: 'CAN bus, wiring' },
+            'U0121': { desc: 'Lost Communication with ABS', system: 'Network', common: 'CAN bus' },
+            'U0155': { desc: 'Lost Communication with Instrument Panel', system: 'Network', common: 'CAN bus' },
+            
+            // Generic helpful terms
+            'CAT': { desc: 'Catalytic Converter Related', system: 'Emissions', common: 'P0420, P0430' },
+            'O2': { desc: 'Oxygen Sensor Related', system: 'Emissions', common: 'P0130-P0160' },
+            'MAF': { desc: 'Mass Air Flow Sensor Related', system: 'Air/Fuel', common: 'P0100-P0103' },
+            'EGR': { desc: 'Exhaust Gas Recirculation', system: 'Emissions', common: 'P0400-P0405' },
+            'EVAP': { desc: 'Evaporative Emissions', system: 'EVAP', common: 'P0440-P0456' },
+            'MISFIRE': { desc: 'Engine Misfire Related', system: 'Ignition', common: 'P0300-P0306' },
+            'LEAN': { desc: 'System Too Lean', system: 'Air/Fuel', common: 'P0171, P0174' },
+            'RICH': { desc: 'System Too Rich', system: 'Air/Fuel', common: 'P0172, P0175' },
+            'TRANS': { desc: 'Transmission Related', system: 'Transmission', common: 'P0700-P1783' }
+        };
 
-</div>
-
-
-<div class="gaugeCard">
-
-<h3>Battery Voltage</h3>
-
-<canvas id="voltChart"></canvas>
-
-</div>
-
-</section>
-
-
-<section class="diagram">
-
-<h2>Engine Diagram</h2>
-
-<img src="images/engine-diagram.png" id="engineDiagram">
-
-<div id="partInfo">
-Click a part to see what it does
-</div>
-
-</section>
-
-
-<section class="aiPanel">
-
-<h2>Ask the AI Mechanic</h2>
-
-<input id="question"
-placeholder="Example: Engine misfires at idle">
-
-<button onclick="ask()">Diagnose</button>
-
-<div id="response"></div>
-
-</section>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="ui.js"></script>
-
-</body>
-</html>
+        // COMPLETE DATABASE OF 50 STORIES
+        const stories=[
+            // P0420 - CATALYTIC CONVERTER (10 stories)
+            {
+                id:1,
+                code:'P0420',
+                title:'$50 Cat Clean vs $1200 Dealer Replacement',
+                vehicle:'2004 Honda Accord 2.4L 156k miles',
+                author:'Mike',
+                img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&q=80',
+                problem:'Check engine light came on with P0420 catalyst efficiency code. Failed state inspection. Local Honda dealer quoted $1,200 for new catalytic converter plus $400 labor. Total: $1,600.',
+                rabbitHole:[
+                    {title:'O2 Sensor Spacer/Cheater',desc:'$15 Amazon "fouler". Light stayed off for 50 miles, came right back. Complete waste of time and money.'},
+                    {title:'Cataclean Fuel Additive',desc:'$25 bottle, followed instructions exactly. Zero change in O2 sensor readings. Might work for borderline cases, not this one.'}
+                ],
+                fix:[
+                    {title:'Remove the Catalytic Converter',desc:'4 bolts, 2 O2 sensors. Penetrating oil overnight, impact wrench. 45 minutes total.'},
+                    {title:'Soak in Dishwasher Detergent',desc:'2 cups Cascade powder in 5-gallon bucket of hot water. Submerged cat completely, soaked 12 hours.'},
+                    {title:'Bake at 500°F for 2 Hours',desc:'Used old shop oven (don\'t use your kitchen oven!). Burns off remaining carbon deposits.'},
+                    {title:'Reinstall with New Gaskets',desc:'New donut gasket ($8) and hardware. Torqued to spec. Cleared codes with scanner.'}
+                ],
+                cost:20,
+                dealerCost:1600,
+                saved:1580,
+                success:47,
+                cat:'p0420',
+                verdict:'3 weeks later: Still no check engine light. Passed state inspection yesterday. O2 sensors showing normal switching frequency. This fix won\'t last forever (probably 1-2 years on a 20-year-old car with 156k miles). But that\'s perfect. Would do again in a heartbeat.',
+                proTip:'Always check your O2 sensor data first! If rear O2 is stuck lean or rich, this won\'t help. Mine was switching slowly but normally - that\'s the key indicator this fix will work.'
+            },
+            {
+                id:2,
+                code:'P0420',
+                title:'Rear O2 Sensor Only - Not the Cat',
+                vehicle:'2010 Subaru Outback 2.5L 180k miles',
+                author:'SubieShop',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'P0420 code, dealer said catalytic converter needed replacement immediately. Quote: $1,185 parts + labor.',
+                rabbitHole:[
+                    {title:'Considered Aftermarket Cat',desc:'Was going to buy $300 universal cat and have shop weld it. Still $600+ total.'}
+                ],
+                fix:[
+                    {title:'Check O2 Sensor Data',desc:'Scanned with Torque Pro. Rear O2 sensor was lazy, not switching properly. Front O2 was fine.'},
+                    {title:'Replace Rear O2 Only',desc:'Bought Bosch O2 sensor for $85. 22mm wrench, 10 minutes to swap. Cleared codes.'}
+                ],
+                cost:85,
+                dealerCost:1185,
+                saved:1100,
+                success:89,
+                cat:'p0420',
+                verdict:'6 months later, still no codes. Cat was fine, just the sensor telling the ECU it was bad. Always check sensor data before replacing expensive cats!',
+                proTip:'Use a scanner that shows O2 sensor voltage graphs. Rear O2 should wave between 0.1V and 0.9V. If it\'s flatlined, replace the sensor first.'
+            },
+            {
+                id:3,
+                code:'P0420',
+                title:'Exhaust Leak Causing False P0420',
+                vehicle:'2007 Toyota Camry 2.4L 142k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'P0420 code, rough idle, exhaust smell in cabin. Dealer wanted $1,400 for new catalytic converter.',
+                rabbitHole:[
+                    {title:'Replaced Both O2 Sensors',desc:'$180 in sensors, no change. Still had P0420 and rough idle.'}
+                ],
+                fix:[
+                    {title:'Visual Inspection',desc:'Found crack in flex pipe before catalytic converter. Exhaust leak was letting air in, throwing off O2 readings.'},
+                    {title:'Weld the Crack',desc:'Local muffler shop welded crack for $80. New gasket $40. Total $120.'}
+                ],
+                cost:120,
+                dealerCost:1400,
+                saved:1280,
+                success:34,
+                cat:'p0420',
+                verdict:'Code gone immediately after weld. Idle smooth. No more exhaust smell. Always inspect exhaust for leaks before condemning the cat!',
+                proTip:'Use a smoke machine or listen for leaks with engine running. Exhaust leaks before the cat will cause false P0420 codes.'
+            },
+            {
+                id:4,
+                code:'P0420',
+                title:'Oil Consumption Killing the Cat',
+                vehicle:'2008 Honda Civic 1.8L 210k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0420 every 3 months, burning 1 quart oil every 1,000 miles. Dealer quote: $1,200 cat + investigate oil consumption.',
+                rabbitHole:[
+                    {title:'Just Cleaned Cat',desc:'Worked for 2 months, then code came back. Oil was coating the cat again.'}
+                ],
+                fix:[
+                    {title:'Fix Oil Consumption First',desc:'Replaced PCV valve ($12), added oil catch can ($45), switched to high mileage oil.'},
+                    {title:'Then Clean Cat',desc:'Once oil consumption slowed, did detergent soak and bake on cat.'}
+                ],
+                cost:95,
+                dealerCost:1200,
+                saved:1105,
+                success:23,
+                cat:'p0420',
+                verdict:'3 months later, no codes, oil consumption down to 1qt/3000mi. Cat stays clean when oil stays in engine!',
+                proTip:'If you have P0420 AND oil consumption, fix the oil problem first or you\'ll be replacing cats forever.'
+            },
+            {
+                id:5,
+                code:'P0420',
+                title:'Spark Plug Fouling Causing Cat Failure',
+                vehicle:'2006 Nissan Altima 2.5L 165k miles',
+                author:'NissanTech',
+                img:'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=400&q=80',
+                problem:'P0420, rough idle, terrible gas mileage, smell of raw fuel.',
+                rabbitHole:[
+                    {title:'Replaced Cat',desc:'New cat failed in 3 months. Didn\'t fix root cause.'}
+                ],
+                fix:[
+                    {title:'Check Spark Plugs',desc:'Plugs were fouled with carbon, causing misfires. Raw fuel was entering cat.'},
+                    {title:'New Plugs + Cat Clean',desc:'NGK plugs ($45) + cat cleaning ($35) + upstream O2 ($85).'}
+                ],
+                cost:165,
+                dealerCost:1300,
+                saved:1135,
+                success:56,
+                cat:'p0420',
+                verdict:'Fixed the misfire, cat recovered. 8 months later, still passing emissions. Fix the engine first, then the cat!',
+                proTip:'Misfires kill cats. If you have P0300 and P0420 together, fix the misfire first.'
+            },
+            {
+                id:6,
+                code:'P0420',
+                title:'Cheap Cat from RockAuto Works',
+                vehicle:'2005 Ford F-150 5.4L 195k miles',
+                author:'FordGuy',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'Both banks P0420/P0430, dealer wanted $2,400 for both cats.',
+                rabbitHole:[
+                    {title:'Tried Used Cat',desc:'Junkyard cat lasted 2 weeks. Waste of $80.'}
+                ],
+                fix:[
+                    {title:'Buy Eastern Catalytic',desc:'RockAuto Eastern Catalytic direct fit cats $280 each.'},
+                    {title:'Replace Both',desc:'$560 for both cats, $120 labor at muffler shop. Total $680.'}
+                ],
+                cost:680,
+                dealerCost:2400,
+                saved:1720,
+                success:67,
+                cat:'p0420',
+                verdict:'1 year later, still passing emissions. RockAuto cats work if you buy the right brand.',
+                proTip:'Eastern and Walker cats work fine. Avoid "universal" weld-in cats.'
+            },
+            {
+                id:7,
+                code:'P0420',
+                title:'Muffler Delete Causing P0420',
+                vehicle:'2012 Honda Civic Si 2.4L 98k miles',
+                author:'VTEC_Kid',
+                img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80',
+                problem:'P0420 after aftermarket exhaust install',
+                rabbitHole:[
+                    {title:'Tuned ECU',desc:'Still threw codes after tune.'}
+                ],
+                fix:[
+                    {title:'Reinstall Resonator',desc:'Added resonator back to system.'},
+                    {title:'O2 Defouler',desc:'Spark plug non-fouler on rear O2 with 1/2" hole drilled.'}
+                ],
+                cost:60,
+                dealerCost:900,
+                saved:840,
+                success:28,
+                cat:'p0420',
+                verdict:'Passed inspection. Not permanent fix but works for now.',
+                proTip:'Exhaust changes affect O2 readings. May need tune or defoulers.'
+            },
+            {
+                id:8,
+                code:'P0420',
+                title:'Coolant Leak Poisoning Cat',
+                vehicle:'2009 Toyota Corolla 1.8L 155k miles',
+                author:'ToyotaTech',
+                img:'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=400&q=80',
+                problem:'P0420, losing coolant, white smoke. Shop quoted $2,800 head gasket + cat.',
+                rabbitHole:[
+                    {title:'Just Replaced Cat',desc:'New one failed in 1 month. Coolant was killing it.'}
+                ],
+                fix:[
+                    {title:'Head Gasket Sealer',desc:'BlueDevil sealer $45. Temporary fix.'},
+                    {title:'New Cat After',desc:'Once leak stopped, new cat $450.'}
+                ],
+                cost:495,
+                dealerCost:2800,
+                saved:2305,
+                success:19,
+                cat:'p0420',
+                verdict:'6 months later, still working. Sealer held, cat stays dry.',
+                proTip:'Fix coolant leaks BEFORE replacing cat or you\'ll be doing it twice.'
+            },
+            {
+                id:9,
+                code:'P0420',
+                title:'Bad Gas Destroyed My Cat',
+                vehicle:'2015 Chevy Silverado 5.3L 87k miles',
+                author:'TruckLife',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+                problem:'P0420 after filling up at sketchy gas station. Rough running, sulfur smell. Dealer wanted $1,800 for new cat.',
+                rabbitHole:[
+                    {title:'Replaced O2 Sensors',desc:'$240 wasted. Problem was contaminated cat, not sensors.'}
+                ],
+                fix:[
+                    {title:'Drain Bad Fuel',desc:'Siphoned out 3/4 tank of suspected bad gas.'},
+                    {title:'Cataclean + High Octane',desc:'One bottle Cataclean, filled with Shell 93 octane.'},
+                    {title:'Italian Tune-Up',desc:'Drove hard for 100 miles. High RPMs burned off deposits.'}
+                ],
+                cost:85,
+                dealerCost:1800,
+                saved:1715,
+                success:41,
+                cat:'p0420',
+                verdict:'Code cleared after 150 miles. 4 months later, still good. Bad gas happens - try cleaning before replacing!',
+                proTip:'If P0420 appears right after fill-up, suspect fuel quality. Try premium gas and cleaner first.'
+            },
+            {
+                id:10,
+                code:'P0420',
+                title:'Welded Heat Shield Fixed False Code',
+                vehicle:'2003 Lexus ES300 3.0L 178k miles',
+                author:'LexusTech',
+                img:'https://images.unsplash.com/photo-1503376763036-066120622c74?w=400&q=80',
+                problem:'P0420 intermittent, worse in hot weather. Dealer said cat failing $1,600.',
+                rabbitHole:[
+                    {title:'Replaced Rear O2',desc:'No change. Code came back within 50 miles.'}
+                ],
+                fix:[
+                    {title:'Inspect Heat Shields',desc:'Found loose heat shield on cat causing overheating.'},
+                    {title:'Reweld Shields',desc:'Muffler shop welded loose shields $60.'}
+                ],
+                cost:60,
+                dealerCost:1600,
+                saved:1540,
+                success:15,
+                cat:'p0420',
+                verdict:'6 months, no codes. Heat shield was causing cat to overheat and throw false efficiency code.',
+                proTip:'Loose heat shields cause cats to overheat. Check them before replacing expensive components.'
+            },
+            // P0300 - MISFIRE (8 stories)
+            {
+                id:11,
+                code:'P0300',
+                title:'$8 Coil Pack vs $600 Dealer Diagnosis',
+                vehicle:'2005 Honda Accord 2.4L 140k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'Random misfire P0300, shaking at idle, flashing CEL. Shop wanted $600 to diagnose and replace all coils.',
+                rabbitHole:[
+                    {title:'Replaced All Spark Plugs',desc:'$60, no change. Still misfiring.'}
+                ],
+                fix:[
+                    {title:'Scan for Specific Cylinder',desc:'Torque Pro showed P0303 (cylinder 3).'},
+                    {title:'Swap Coil Packs',desc:'Swapped coil 3 with coil 1. Misfire moved to P0301.'},
+                    {title:'Replace Bad Coil',desc:'$8 coil pack from RockAuto. 10 minute swap.'}
+                ],
+                cost:8,
+                dealerCost:600,
+                saved:592,
+                success:92,
+                cat:'p0300',
+                verdict:'Fixed immediately. Been 8 months, runs perfect. Always swap test before buying full sets!',
+                proTip:'Swap coils between cylinders to isolate the bad one. Saves buying parts you don\'t need.'
+            },
+            {
+                id:12,
+                code:'P0300',
+                title:'Valve Cover Gasket Causing Misfire',
+                vehicle:'2008 BMW 328i 3.0L 125k miles',
+                author:'BimmerFix',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+                problem:'P0300, rough idle, oil smell. Indie shop quoted $1,200 for ignition coils and valve cover.',
+                rabbitHole:[
+                    {title:'Replaced All Coils',desc:'$280, no change. Still misfiring.'}
+                ],
+                fix:[
+                    {title:'Check Spark Plug Wells',desc:'Found oil in cylinder 2 and 4 spark plug wells from leaking gasket.'},
+                    {title:'New Valve Cover Gasket',desc:'$45 gasket set, 2 hours labor. Cleaned oil from plugs.'}
+                ],
+                cost:45,
+                dealerCost:1200,
+                saved:1155,
+                success:78,
+                cat:'p0300',
+                verdict:'Misfire gone immediately. Oil was shorting spark plugs. BMWs are notorious for this.',
+                proTip:'Check for oil in spark plug wells before replacing coils. Common on BMW, Nissan, Honda.'
+            },
+            {
+                id:13,
+                code:'P0300',
+                title:'Dirty Injector Cleaner Fixed It',
+                vehicle:'2010 Ford F-150 5.4L 98k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'Intermittent P0300, worse when cold. Dealer wanted $800 for new injectors.',
+                rabbitHole:[
+                    {title:'Replaced Spark Plugs',desc:'Motorcraft plugs $80, no change.'}
+                ],
+                fix:[
+                    {title:'Sea Foam Treatment',desc:'1 can in tank, 1 can in brake booster vacuum line.'},
+                    {title:'Drive It Hard',desc:'Drove 200 miles aggressively to clean injectors.'}
+                ],
+                cost:25,
+                dealerCost:800,
+                saved:775,
+                success:63,
+                cat:'p0300',
+                verdict:'Misfire cleared after 100 miles. 6 months later, still smooth. Try cleaner before new injectors!',
+                proTip:'Ford 5.4L injectors gum up. Sea Foam or Techron often fixes intermittent misfires.'
+            },
+            {
+                id:14,
+                code:'P0300',
+                title:'Vacuum Leak - $3 Hose',
+                vehicle:'2004 Toyota Camry 2.4L 165k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'P0300, high idle, hissing noise. Shop quoted $400 for "intake manifold gasket".',
+                rabbitHole:[
+                    {title:'Smoke Test',desc:'Was going to pay $100 for smoke test.'}
+                ],
+                fix:[
+                    {title:'Visual Inspection',desc:'Found cracked vacuum hose behind intake manifold.'},
+                    {title:'Replace Hose',desc:'$3 hose from parts store, 5 minutes with pliers.'}
+                ],
+                cost:3,
+                dealerCost:400,
+                saved:397,
+                success:88,
+                cat:'p0300',
+                verdict:'Idle dropped to normal immediately. Misfire gone. $3 fix!',
+                proTip:'Listen for hissing with engine running. Vacuum leaks cause lean misfires.'
+            },
+            {
+                id:15,
+                code:'P0300',
+                title:'MAF Sensor Cleaning Fixed Misfire',
+                vehicle:'2006 Nissan Altima 2.5L 134k miles',
+                author:'NissanTech',
+                img:'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=400&q=80',
+                problem:'P0300, rough idle, stalling at stops. Shop said bad MAF $380.',
+                rabbitHole:[
+                    {title:'Replaced Plugs and Coils',desc:'$200, no improvement.'}
+                ],
+                fix:[
+                    {title:'Remove MAF Sensor',desc:'2 screws, 5 minutes.'},
+                    {title:'Clean with MAF Cleaner',desc:'$8 CRC MAF cleaner. Sprayed wire gently, let dry.'}
+                ],
+                cost:8,
+                dealerCost:380,
+                saved:372,
+                success:71,
+                cat:'p0300',
+                verdict:'Runs like new. Never use brake cleaner on MAF - always use proper MAF cleaner.',
+                proTip:'Clean MAF before replacing. Takes 10 minutes and $8 vs $400 sensor.'
+            },
+            {
+                id:16,
+                code:'P0300',
+                title:'Ground Wire Causing Random Misfire',
+                vehicle:'2001 Chevy Silverado 5.3L 220k miles',
+                author:'ChevyMike',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'Random P0300, worse in wet weather. Multiple shops couldn\'t find it.',
+                rabbitHole:[
+                    {title:'Replaced ICM',desc:'$180 ignition control module, no change.'}
+                ],
+                fix:[
+                    {title:'Check Grounds',desc:'Found corroded ground wire from engine to firewall.'},
+                    {title:'Clean and Tighten',desc:'Wire brush, dielectric grease, tighten bolt.'}
+                ],
+                cost:0,
+                dealerCost:800,
+                saved:800,
+                success:34,
+                cat:'p0300',
+                verdict:'Fixed immediately. Ground was causing weak spark. Free fix!',
+                proTip:'Check engine grounds before throwing parts at misfires. Especially on older trucks.'
+            },
+            {
+                id:17,
+                code:'P0300',
+                title:'Timing Chain Tensioner Causing Misfire',
+                vehicle:'2008 BMW 528i 3.0L 115k miles',
+                author:'BimmerTech',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+                problem:'P0300, rattling on startup, rough idle. Dealer quoted $3,500 for timing chain.',
+                rabbitHole:[
+                    {title:'Replaced VANOS Solenoids',desc:'$400, helped slightly but didn\'t fix misfire.'}
+                ],
+                fix:[
+                    {title:'Replace Tensioner Only',desc:'Bought updated tensioner $180.'},
+                    {title:'DIY Replacement',desc:'YouTube video, 4 hours, basic tools.'}
+                ],
+                cost:180,
+                dealerCost:3500,
+                saved:3320,
+                success:45,
+                cat:'p0300',
+                verdict:'Rattle gone, misfire gone. Chain was fine, just loose from bad tensioner.',
+                proTip:'BMW N52 engines have weak tensioners. Replace tensioner before assuming chain is bad.'
+            },
+            {
+                id:18,
+                code:'P0300',
+                title:'E85 Conversion Causing Misfires',
+                vehicle:'2005 Ford Crown Vic 4.6L 180k miles',
+                author:'CrownVicKing',
+                img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80',
+                problem:'P0300 after switching to E85, hard starting, rough idle.',
+                rabbitHole:[
+                    {title:'Replaced Fuel Pump',desc:'$140, no change. Wasn\'t a pressure issue.'}
+                ],
+                fix:[
+                    {title:'Check Injector Size',desc:'E85 needs 30% more fuel. Stock injectors too small.'},
+                    {title:'Upgrade Injectors',desc:'Used Mustang GT injectors $80 from junkyard.'}
+                ],
+                cost:80,
+                dealerCost:600,
+                saved:520,
+                success:22,
+                cat:'p0300',
+                verdict:'Runs perfect on E85 now. Misfire was lean condition from undersized injectors.',
+                proTip:'Converting to E85? You need bigger injectors or you\'ll run lean and misfire.'
+            },
+            // P0171 - SYSTEM TOO LEAN (7 stories)
+            {
+                id:19,
+                code:'P0171',
+                title:'$12 PCV Valve Fixed Lean Code',
+                vehicle:'2004 Honda Civic 1.7L 156k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0171 system too lean, rough idle, oil in air filter box. Shop quoted $800 for "intake leak diagnosis".',
+                rabbitHole:[
+                    {title:'Smoke Test Quote',desc:'Shop wanted $150 just to smoke test for leaks.'}
+                ],
+                fix:[
+                    {title:'Check PCV Valve',desc:'Found stuck open, causing massive vacuum leak.'},
+                    {title:'Replace PCV',desc:'$12 part, 2 minutes with pliers.'}
+                ],
+                cost:12,
+                dealerCost:800,
+                saved:788,
+                success:95,
+                cat:'p0171',
+                verdict:'Idle smoothed out immediately. Code cleared after 10 miles. Most common cause of P0171 on Hondas!',
+                proTip:'Check PCV first on P0171. Shake it - should rattle. If not, replace it. $12 vs hours of leak hunting.'
+            },
+            {
+                id:20,
+                code:'P0171',
+                title:'Intake Manifold Gasket Leak',
+                vehicle:'2005 Ford F-150 5.4L 140k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'P0171 both banks, rough cold start, whistle noise. Dealer quoted $1,200 for intake gaskets.',
+                rabbitHole:[
+                    {title:'Replaced MAF',desc:'$280, no change. Wasn\'t sensor issue.'}
+                ],
+                fix:[
+                    {title:'Propane Test',desc:'Sprayed propane around intake. RPM jumped at rear of manifold.'},
+                    {title:'Replace Gaskets',desc:'$45 gasket set, 3 hours DIY with YouTube.'}
+                ],
+                cost:45,
+                dealerCost:1200,
+                saved:1155,
+                success:67,
+                cat:'p0171',
+                verdict:'Fixed immediately. Common on 5.4L Tritons. Gaskets get hard and leak vacuum.',
+                proTip:'Use propane or brake cleaner around intake. RPM change = vacuum leak found.'
+            },
+            {
+                id:21,
+                code:'P0171',
+                title:'Brake Booster Vacuum Leak',
+                vehicle:'2003 Toyota Camry 2.4L 178k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'P0171, hard brake pedal, hissing noise. Shop said bad brake booster $650.',
+                rabbitHole:[
+                    {title:'Replaced All Vacuum Hoses',desc:'$40, no change. Leak was in booster itself.'}
+                ],
+                fix:[
+                    {title:'Check Booster Check Valve',desc:'$8 valve was stuck open, leaking vacuum.'},
+                    {title:'Replace Valve Only',desc:'Didn\'t need whole booster, just the valve.'}
+                ],
+                cost:8,
+                dealerCost:650,
+                saved:642,
+                success:41,
+                cat:'p0171',
+                verdict:'Brakes normal again, code gone. Always check the cheap valve before replacing booster!',
+                proTip:'If hissing comes from brake pedal area, check booster check valve first. $8 vs $600.'
+            },
+            {
+                id:22,
+                code:'P0171',
+                title:'Fuel Filter Restriction Causing Lean',
+                vehicle:'2001 Chevy Silverado 5.3L 195k miles',
+                author:'ChevyMike',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'P0171 under load, loss of power, fuel trim maxed. Shop quoted $900 for fuel pump.',
+                rabbitHole:[
+                    {title:'Checked Fuel Pressure',desc:'Pressure was low but pump was new.'}
+                ],
+                fix:[
+                    {title:'Replace Fuel Filter',desc:'$15 filter, 20 minutes with line wrenches.'}
+                ],
+                cost:15,
+                dealerCost:900,
+                saved:885,
+                success:53,
+                cat:'p0171',
+                verdict:'Power restored, code gone. Filter was original from 2001, completely clogged.',
+                proTip:'Replace fuel filter every 30k miles. Restricted flow causes lean condition under load.'
+            },
+            {
+                id:23,
+                code:'P0171',
+                title:'Air Filter Housing Crack',
+                vehicle:'2007 Nissan Altima 2.5L 134k miles',
+                author:'NissanTech',
+                img:'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=400&q=80',
+                problem:'P0171, whistling noise, poor MPG. Shop quoted $400 for "intake system repair".',
+                rabbitHole:[
+                    {title:'Replaced MAF',desc:'$180, no change.'}
+                ],
+                fix:[
+                    {title:'Inspect Airbox',desc:'Found crack in lower airbox after filter.'},
+                    {title:'JB Weld Fix',desc:'Plastic epoxy repair $8. Good as new.'}
+                ],
+                cost:8,
+                dealerCost:400,
+                saved:392,
+                success:29,
+                cat:'p0171',
+                verdict:'Whistle gone, code cleared. Unmetered air was entering after MAF sensor.',
+                proTip:'Check airbox for cracks. Air entering after MAF causes lean condition.'
+            },
+            {
+                id:24,
+                code:'P0171',
+                title:'O2 Sensor Wiring Corrosion',
+                vehicle:'2004 Subaru Outback 2.5L 167k miles',
+                author:'SubieShop',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'P0171, erratic fuel trim, hesitation. Shop quoted $1,100 for new O2 sensors and wiring.',
+                rabbitHole:[
+                    {title:'Replaced Front O2',desc:'$180, no change. Wasn\'t the sensor.'}
+                ],
+                fix:[
+                    {title:'Inspect Wiring',desc:'Found corroded connector at O2 sensor.'},
+                    {title:'Repair Wiring',desc:'Cut out bad section, soldered new connector $15.'}
+                ],
+                cost:15,
+                dealerCost:1100,
+                saved:1085,
+                success:37,
+                cat:'p0171',
+                verdict:'Fuel trim stabilized immediately. Code never returned. Wiring, not sensor!',
+                proTip:'Check O2 sensor connectors for corrosion. Common in salt belt states.'
+            },
+            {
+                id:25,
+                code:'P0171',
+                title:'Exhaust Leak Before O2 Sensor',
+                vehicle:'2005 Honda Accord 2.4L 145k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0171, ticking exhaust, poor MPG. Shop quoted $800 for cat replacement.',
+                rabbitHole:[
+                    {title:'Replaced O2 Sensors',desc:'$240, no change.'}
+                ],
+                fix:[
+                    {title:'Find Exhaust Leak',desc:'Leak at flex pipe before cat.'},
+                    {title:'Patch Pipe',desc:'Clamp-on patch $25 from auto parts store.'}
+                ],
+                cost:25,
+                dealerCost:800,
+                saved:775,
+                success:48,
+                cat:'p0171',
+                verdict:'Code gone in 20 miles. Leak was letting air in, causing false lean reading.',
+                proTip:'Exhaust leaks before O2 sensor cause false lean codes. Check exhaust first!'
+            },
+            // P0455 - EVAP LEAK (6 stories)
+            {
+                id:26,
+                code:'P0455',
+                title:'Gas Cap O-Ring Fixed It',
+                vehicle:'2008 Toyota Camry 2.4L 120k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'P0455 large evap leak, CEL on. Dealer quoted $400 for "smoke test and diagnosis".',
+                rabbitHole:[
+                    {title:'New Gas Cap',desc:'$25 OEM cap, no change. Wasn\'t the cap itself.'}
+                ],
+                fix:[
+                    {title:'Inspect Filler Neck',desc:'Found rust around gas cap seal area.'},
+                    {title:'Clean and Grease',desc:'Sanded rust, dielectric grease on O-ring. $0.'}
+                ],
+                cost:0,
+                dealerCost:400,
+                saved:400,
+                success:82,
+                cat:'p0455',
+                verdict:'Code cleared after 3 drive cycles. Free fix! Always check filler neck condition.',
+                proTip:'Rust on filler neck prevents seal even with new cap. Clean it first.'
+            },
+            {
+                id:27,
+                code:'P0455',
+                title:'EVAP Canister Vent Valve',
+                vehicle:'2006 Ford F-150 5.4L 155k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'P0455, hard to fill gas tank, clicks off pump. Dealer quoted $380 for canister.',
+                rabbitHole:[
+                    {title:'Replaced Gas Cap',desc:'$20, no change.'}
+                ],
+                fix:[
+                    {title:'Check Vent Valve',desc:'Found stuck closed, preventing air escape.'},
+                    {title:'Replace Vent Valve',desc:'$45 part, 30 minutes near spare tire.'}
+                ],
+                cost:45,
+                dealerCost:380,
+                saved:335,
+                success:91,
+                cat:'p0455',
+                verdict:'Fills normally now, code gone. Common on Fords. Valve gets dirt in it.',
+                proTip:'If pump clicks off while fueling, suspect vent valve. Easy DIY on most trucks.'
+            },
+            {
+                id:28,
+                code:'P0455',
+                title:'Rusty EVAP Line Repair',
+                vehicle:'2003 Chevy Silverado 5.3L 210k miles',
+                author:'ChevyMike',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'P0455, smell of gas. Shop quoted $600 for "evap system overhaul".',
+                rabbitHole:[
+                    {title:'Smoke Test',desc:'Found leak but couldn\'t afford $150 test.'}
+                ],
+                fix:[
+                    {title:'Visual Inspection',desc:'Found rust hole in steel line above spare tire.'},
+                    {title:'Rubber Hose Bypass',desc:'Cut out rusty section, rubber hose and clamps $12.'}
+                ],
+                cost:12,
+                dealerCost:600,
+                saved:588,
+                success:44,
+                cat:'p0455',
+                verdict:'Code cleared, no more gas smell. Rust belt trucks get rusty evap lines.',
+                proTip:'Check evap lines along frame. They rust out. Rubber hose splice is acceptable repair.'
+            },
+            {
+                id:29,
+                code:'P0455',
+                title:'Purge Valve Stuck Open',
+                vehicle:'2010 Honda Civic 1.8L 98k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0455, rough idle after fill-up, stalls. Shop quoted $280 for purge valve.',
+                rabbitHole:[
+                    {title:'Replaced Gas Cap',desc:'$25, no change.'}
+                ],
+                fix:[
+                    {title:'Test Purge Valve',desc:'Blew through it - should be closed with no power.'},
+                    {title:'Replace Purge Valve',desc:'$35 part, 10 minutes by throttle body.'}
+                ],
+                cost:35,
+                dealerCost:280,
+                saved:245,
+                success:73,
+                cat:'p0455',
+                verdict:'Idle normal again. Valve was stuck open, flooding engine with vapor.',
+                proTip:'If rough idle after fueling, suspect purge valve. Easy test: blow through it.'
+            },
+            {
+                id:30,
+                code:'P0455',
+                title:'Fuel Tank Pressure Sensor',
+                vehicle:'2007 BMW 328i 3.0L 115k miles',
+                author:'BimmerTech',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+                problem:'P0455, false tank readings, CEL constantly on. Dealer quoted $650 for sensor and labor.',
+                rabbitHole:[
+                    {title:'Replaced Gas Cap',desc:'$45 BMW cap, no change.'}
+                ],
+                fix:[
+                    {title:'Replace Pressure Sensor',desc:'$85 part on top of fuel pump module.'},
+                    {title:'DIY Install',desc:'Access under rear seat, 45 minutes.'}
+                ],
+                cost:85,
+                dealerCost:650,
+                saved:565,
+                success:38,
+                cat:'p0455',
+                verdict:'Code gone, fuel gauge accurate. Sensor was reading wrong pressure.',
+                proTip:'BMW fuel pressure sensors fail often. DIY accessible under rear seat.'
+            },
+            {
+                id:31,
+                code:'P0455',
+                title:'Charcoal Canister Saturated',
+                vehicle:'2005 Toyota Tacoma 4.0L 145k miles',
+                author:'TacoTuesday',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'P0455, gas smell, overfilling tank. Shop quoted $500 for canister.',
+                rabbitHole:[
+                    {title:'New Gas Cap',desc:'$20, no change.'}
+                ],
+                fix:[
+                    {title:'Don\'t Top Off Tank',desc:'Stopped clicking handle after auto-stop.'},
+                    {title:'Replace Canister',desc:'Used canister from junkyard $45.'}
+                ],
+                cost:45,
+                dealerCost:500,
+                saved:455,
+                success:56,
+                cat:'p0455',
+                verdict:'Code cleared after 2 weeks. Topping off tank floods the canister.',
+                proTip:'Never top off your tank! It saturates the charcoal canister and triggers P0455.'
+            },
+            // O2 SENSORS (5 stories)
+            {
+                id:32,
+                code:'O2',
+                title:'Heater Circuit - Wiring Fix',
+                vehicle:'2004 Honda Accord 2.4L 167k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0135 O2 heater circuit, failed inspection. Shop quoted $280 for new sensor.',
+                rabbitHole:[
+                    {title:'Replaced O2 Sensor',desc:'$85, same code came back. Wasn\'t the sensor.'}
+                ],
+                fix:[
+                    {title:'Check Wiring',desc:'Found melted wire near exhaust manifold.'},
+                    {title:'Repair Harness',desc:'Soldered new wire section $10.'}
+                ],
+                cost:10,
+                dealerCost:280,
+                saved:270,
+                success:64,
+                cat:'o2',
+                verdict:'Passed inspection. Heater circuit was open due to wiring, not bad sensor.',
+                proTip:'O2 heater codes often mean wiring. Check resistance and continuity first.'
+            },
+            {
+                id:33,
+                code:'O2',
+                title:'Sensor Socket Trick',
+                vehicle:'2005 Ford F-150 5.4L 189k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'P0155 bank 2 sensor 1 heater circuit. Shop quoted $200 for sensor + labor.',
+                rabbitHole:[
+                    {title:'Generic Sensor',desc:'$40 part didn\'t fit right. Wrong thread pitch.'}
+                ],
+                fix:[
+                    {title:'Buy Proper Socket',desc:'$15 O2 sensor socket with cutout for wire.'},
+                    {title:'Motorcraft Sensor',desc:'$85 OEM sensor. Socket made install 5 minutes.'}
+                ],
+                cost:100,
+                dealerCost:200,
+                saved:100,
+                success:87,
+                cat:'o2',
+                verdict:'Right tools make it easy. Generic sensors often cause issues.',
+                proTip:'Invest in O2 sensor socket. Saves hours of frustration.'
+            },
+            {
+                id:34,
+                code:'O2',
+                title:'Rear O2 Delete Tune',
+                vehicle:'2010 Chevy Camaro SS 6.2L 78k miles',
+                author:'CamaroKid',
+                img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80',
+                problem:'P0420/P0430 with long tube headers. Rear O2s reading out of range.',
+                rabbitHole:[
+                    {title:'O2 Defoulers',desc:'$30, still threw codes occasionally.'}
+                ],
+                fix:[
+                    {title:'HP Tuners',desc:'Disabled rear O2 monitoring in ECU.'},
+                    {title:'Turn Off Codes',desc:'Professional tune $400, turned off cat monitoring.'}
+                ],
+                cost:400,
+                dealerCost:1200,
+                saved:800,
+                success:45,
+                cat:'o2',
+                verdict:'No more codes, passes inspection (visual only in my state).',
+                proTip:'Off-road use only! Check local laws before disabling emissions.'
+            },
+            {
+                id:35,
+                code:'O2',
+                title:'Front O2 Causing Bad MPG',
+                vehicle:'2006 Toyota Camry 2.4L 156k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'Bad gas mileage, sluggish, no codes yet. Shop said wait for codes.',
+                rabbitHole:[
+                    {title:'Replaced Air Filter',desc:'$20, no improvement.'}
+                ],
+                fix:[
+                    {title:'Check O2 Switching',desc:'Scanner showed lazy front O2.'},
+                    {title:'Replace Front O2',desc:'$95 Denso sensor. MPG improved 4mpg.'}
+                ],
+                cost:95,
+                dealerCost:400,
+                saved:305,
+                success:72,
+                cat:'o2',
+                verdict:'MPG back to 28 from 24. Sensor was lazy but not throwing codes yet.',
+                proTip:'Check O2 switching rate with scanner. Lazy O2 hurts MPG before it throws codes.'
+            },
+            {
+                id:36,
+                code:'O2',
+                title:'O2 Bung Repair',
+                vehicle:'2001 Chevy Silverado 5.3L 234k miles',
+                author:'ChevyMike',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'Stripped O2 threads, exhaust leak, P0135. Shop quoted $500 for new pipe.',
+                rabbitHole:[
+                    {title:'Oversize Sensor',desc:'Didn\'t exist for this application.'}
+                ],
+                fix:[
+                    {title:'Retap Threads',desc:'M18x1.5 tap $25.'},
+                    {title:'Install with Antiseize',desc:'New sensor $85. Threads held fine.'}
+                ],
+                cost:110,
+                dealerCost:500,
+                saved:390,
+                success:28,
+                cat:'o2',
+                verdict:'No leak, code gone. Retapping saved replacing entire exhaust section.',
+                proTip:'Stripped O2 threads can often be retapped. Try before replacing pipe.'
+            },
+            // EGR SYSTEM (5 stories)
+            {
+                id:37,
+                code:'P0401',
+                title:'Clean EGR Passages',
+                vehicle:'2004 Honda Accord 2.4L 178k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'P0401 insufficient EGR flow, rough idle. Shop quoted $450 for new EGR valve.',
+                rabbitHole:[
+                    {title:'Replaced EGR Valve',desc:'$180, no change. Wasn\'t the valve.'}
+                ],
+                fix:[
+                    {title:'Remove Intake Manifold',desc:'2 hours to access EGR passages.'},
+                    {title:'Clean Carbon',desc:'Carb cleaner and picks. Passages completely clogged.'}
+                ],
+                cost:15,
+                dealerCost:450,
+                saved:435,
+                success:79,
+                cat:'egr',
+                verdict:'Idle smooth, code gone. Passages were clogged, valve was fine.',
+                proTip:'P0401 often means clogged passages, not bad valve. Clean first!'
+            },
+            {
+                id:38,
+                code:'P0401',
+                title:'DPFE Sensor Replacement',
+                vehicle:'2005 Ford F-150 5.4L 167k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'P0401, hesitation, poor MPG. Shop quoted $380 for EGR valve.',
+                rabbitHole:[
+                    {title:'Cleaned EGR Valve',desc:'$0, no change.'}
+                ],
+                fix:[
+                    {title:'Check DPFE Sensor',desc:'Sensor measures EGR pressure differential.'},
+                    {title:'Replace DPFE',desc:'$65 part, 15 minutes on firewall.'}
+                ],
+                cost:65,
+                dealerCost:380,
+                saved:315,
+                success:68,
+                cat:'egr',
+                verdict:'Fixed immediately. Ford DPFE sensors fail constantly.',
+                proTip:'Ford EGR codes often mean DPFE sensor, not EGR valve. Check it first.'
+            },
+            {
+                id:39,
+                code:'P0401',
+                title:'Vacuum Line to EGR',
+                vehicle:'2003 Toyota Camry 3.0L 156k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'P0401, no EGR function. Shop quoted $340 for EGR valve.',
+                rabbitHole:[
+                    {title:'Tested EGR Valve',desc:'Valve worked fine when manually powered.'}
+                ],
+                fix:[
+                    {title:'Trace Vacuum Lines',desc:'Found cracked hose to EGR modulator.'},
+                    {title:'Replace Hose',desc:'$5 vacuum hose, 10 minutes.'}
+                ],
+                cost:5,
+                dealerCost:340,
+                saved:335,
+                success:42,
+                cat:'egr',
+                verdict:'EGR working normally. Simple vacuum leak caused the code.',
+                proTip:'Test EGR valve manually before replacing. Often it\'s vacuum supply issue.'
+            },
+            {
+                id:40,
+                code:'P0401',
+                title:'EGR Cooler Delete',
+                vehicle:'2008 BMW 335i 3.0L 98k miles',
+                author:'BimmerTech',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+                problem:'P0401, coolant loss, white smoke. Dealer quoted $2,400 for EGR cooler.',
+                rabbitHole:[
+                    {title:'Replace EGR Cooler',desc:'$800 part, failed again in 6 months.'}
+                ],
+                fix:[
+                    {title:'EGR Delete Kit',desc:'$200 block-off plates and software.'},
+                    {title:'Tune Out Codes',desc:'MHD tune $300, disabled EGR monitoring.'}
+                ],
+                cost:500,
+                dealerCost:2400,
+                saved:1900,
+                success:56,
+                cat:'egr',
+                verdict:'No more issues, more power, better MPG. Common N54 upgrade.',
+                proTip:'EGR delete for off-road use only. But it solves chronic EGR cooler problems.'
+            },
+            {
+                id:41,
+                code:'P0401',
+                title:'Carbon Cleaning on Valves',
+                vehicle:'2010 VW GTI 2.0T 87k miles',
+                author:'VW_Fan',
+                img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80',
+                problem:'P0401, rough idle, carbon buildup. Shop quoted $800 for intake cleaning.',
+                rabbitHole:[
+                    {title:'Sea Foam',desc:'$25, helped slightly but didn\'t fix it.'}
+                ],
+                fix:[
+                    {title:'Walnut Blasting',desc:'Bought walnut blaster kit $150.'},
+                    {title:'DIY Cleaning',desc:'Removed intake, blasted valves clean.'}
+                ],
+                cost:150,
+                dealerCost:800,
+                saved:650,
+                success:83,
+                cat:'egr',
+                verdict:'Runs like new. Direct injection engines need this every 80k miles.',
+                proTip:'DIY walnut blasting saves hundreds. TSI/TFSI engines need this service.'
+            },
+            // TRANSMISSION (4 stories)
+            {
+                id:42,
+                code:'TRANS',
+                title:'Fluid Change Fixed Shifting',
+                vehicle:'2005 Honda Accord 3.0L 145k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'Hard shifting, jerking, shop quoted $3,800 for transmission rebuild.',
+                rabbitHole:[
+                    {title:'Transmission Additive',desc:'$25 Lucas, no change.'}
+                ],
+                fix:[
+                    {title:'Drain and Fill',desc:'3x drain/fill with Honda DW-1 fluid.'},
+                    {title:'Total Cost',desc:'$90 in fluid, did it myself over 2 weeks.'}
+                ],
+                cost:90,
+                dealerCost:3800,
+                saved:3710,
+                success:94,
+                cat:'trans',
+                verdict:'Shifts like new. Honda transmissions are sensitive to fluid condition.',
+                proTip:'Try fluid change before rebuild. Use ONLY Honda fluid, not universal ATF.'
+            },
+            {
+                id:43,
+                code:'TRANS',
+                title:'Shift Solenoid Replacement',
+                vehicle:'2004 Ford F-150 5.4L 178k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'Stuck in 2nd gear, limp mode. Shop quoted $2,200 for transmission.',
+                rabbitHole:[
+                    {title:'Code Scan',desc:'P0750 shift solenoid A malfunction.'}
+                ],
+                fix:[
+                    {title:'Drop Pan',desc:'Removed transmission pan.'},
+                    {title:'Replace Solenoid',desc:'$45 solenoid, $30 filter/gasket.'}
+                ],
+                cost:75,
+                dealerCost:2200,
+                saved:2125,
+                success:76,
+                cat:'trans',
+                verdict:'Back to normal shifting. Solenoid was stuck, not transmission failure.',
+                proTip:'Solenoid codes often mean bad solenoid, not bad transmission. Check first!'
+            },
+            {
+                id:44,
+                code:'TRANS',
+                title:'Range Sensor Adjustment',
+                vehicle:'2006 Toyota Camry 2.4L 134k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'No reverse, hard to start. Shop quoted $1,800 for transmission.',
+                rabbitHole:[
+                    {title:'Checked Linkage',desc:'Seemed fine, but wasn\'t adjusted right.'}
+                ],
+                fix:[
+                    {title:'Adjust Range Sensor',desc:'Loosened 2 bolts, aligned properly.'},
+                    {title:'Test All Gears',desc:'Reverse works, starts normally now.'}
+                ],
+                cost:0,
+                dealerCost:1800,
+                saved:1800,
+                success:52,
+                cat:'trans',
+                verdict:'10 minute adjustment. Sensor thought it was in drive when in park.',
+                proTip:'No reverse often means range sensor adjustment, not transmission failure.'
+            },
+            {
+                id:45,
+                code:'TRANS',
+                title:'Torque Converter Lockup',
+                vehicle:'2003 Chevy Silverado 5.3L 198k miles',
+                author:'ChevyMike',
+                img:'https://images.unsplash.com/photo-1532581140115-ca3d01490791?w=400&q=80',
+                problem:'Stalling at stops, shuddering. Shop quoted $1,200 for torque converter.',
+                rabbitHole:[
+                    {title:'New Torque Converter',desc:'$400 part, didn\'t fix stalling.'}
+                ],
+                fix:[
+                    {title:'Check TCC Solenoid',desc:'Found sticking TCC solenoid.'},
+                    {title:'Replace Solenoid',desc:'$35 solenoid in side cover.'}
+                ],
+                cost:35,
+                dealerCost:1200,
+                saved:1165,
+                success:61,
+                cat:'trans',
+                verdict:'No more stalling. TCC was staying locked up at idle.',
+                proTip:'Stalling at stops often means TCC solenoid, not torque converter.'
+            },
+            // SUSPENSION/STEERING (5 stories)
+            {
+                id:46,
+                code:'SUSP',
+                title:'End Links Fixed Clunking',
+                vehicle:'2004 Honda Accord 2.4L 167k miles',
+                author:'HondaMike',
+                img:'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80',
+                problem:'Clunking over bumps, shop quoted $800 for struts.',
+                rabbitHole:[
+                    {title:'Replaced Struts',desc:'$400, still clunking. Wasn\'t struts.'}
+                ],
+                fix:[
+                    {title:'Check End Links',desc:'Found loose sway bar end links.'},
+                    {title:'Replace End Links',desc:'$30 pair, 30 minutes with sockets.'}
+                ],
+                cost:30,
+                dealerCost:800,
+                saved:770,
+                success:88,
+                cat:'susp',
+                verdict:'Clunking gone. Always check end links before replacing struts!',
+                proTip:'End links are $30 and clunk when bad. Struts are $400+. Check cheap stuff first.'
+            },
+            {
+                id:47,
+                code:'SUSP',
+                title:'Power Steering Hose Leak',
+                vehicle:'2005 Toyota Camry 3.0L 156k miles',
+                author:'ToyotaTom',
+                img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+                problem:'Whining, fluid leak, hard steering. Shop quoted $650 for rack and pinion.',
+                rabbitHole:[
+                    {title:'Added Stop Leak',desc:'$15, no change.'}
+                ],
+                fix:[
+                    {title:'Find Leak Source',desc:'Leak at pressure hose fitting, not rack.'},
+                    {title:'Replace Hose',desc:'$45 hose, 1 hour to replace.'}
+                ],
+                cost:45,
+                dealerCost:650,
+                saved:605,
+                success:74,
+                cat:'susp',
+                verdict:'No more leak, steering normal. Hose was leaking at crimp fitting.',
+                proTip:'Find the actual leak before assuming rack is bad. Often it\'s just a hose.'
+            },
+            {
+                id:48,
+                code:'SUSP',
+                title:'Ball Joint Press Tool',
+                vehicle:'2004 Ford F-150 5.4L 189k miles',
+                author:'FordTech',
+                img:'https://images.unsplash.com/photo-1605893474270-1d0d9f8e8c72?w=400&q=80',
+                problem:'Loose ball joints, shop quoted $800 for control arms.',
+                rabbitHole:[
+                    {title:'Control Arms',desc:'$400, but ball joints are pressed in.'}
+                ],
+                fix:[
+                    {title:'Buy Ball Joint Press',desc:'$60 loaner tool from AutoZone.'},
+                    {title:'Press in New Joints',desc:'$80 for MOOG ball joints.'}
+                ],
+                cost:140,
+                dealerCost:800,
+                saved:660,
+                success:57,
+                cat:'susp',
+                verdict:'Tight steering again. Press tool made it easy, saved hundreds.',
+                proTip:'Rent ball joint press. Don\'t replace whole control arm if just joint is bad.'
+            },
+            {
+                id:49,
+                code:'SUSP',
+                title:'Wheel Bearing Hub Assembly',
+                vehicle:'2006 Chevy Silverado 5.3L 178k miles',
+                author:'ChevyMike',
+                img:'https://
