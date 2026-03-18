@@ -1,76 +1,93 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
-import OpenAI from "openai";
-import path from "path";
-import { fileURLToPath } from "url";
-
-dotenv.config();
+const express = require('express');
+const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
-app.use(express.json());
-app.use(cors());
-
 const PORT = process.env.PORT || 10000;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+// ===== MIDDLEWARE =====
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve your v2 frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ===== MONGODB CONNECTION =====
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://GWAdmin:Scott23@cluster0.pfib1ha.mongodb.net/garage_wisdom?retryWrites=true&w=majority';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log('MongoDB connection error:', err));
+
+// ===== SIMPLE DATA MODEL (optional) =====
+const QuerySchema = new mongoose.Schema({
+  message: String,
+  reply: String,
+  createdAt: { type: Date, default: Date.now }
 });
 
-// Fix __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const Query = mongoose.model('Query', QuerySchema);
 
-// MongoDB
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>console.log("MongoDB connected"))
-.catch(err=>console.log(err));
+// ===== AI ROUTE =====
+app.post('/api/ai', async (req, res) => {
+  try {
+    const { message } = req.body;
 
-// Schema
-const QuestionSchema = new mongoose.Schema({
-  question:String,
-  answer:String,
-  createdAt:{type:Date,default:Date.now}
-});
+    if (!message) {
+      return res.status(400).json({ reply: 'No input provided' });
+    }
 
-const Question = mongoose.model("Question",QuestionSchema);
+    let msg = message.toLowerCase();
+    let reply = "Scan it first. Could be multiple causes.";
 
-// AI route
-app.post("/ask",async(req,res)=>{
-  try{
+    // Basic mechanic-style AI logic
+    if (msg.includes('p0300')) {
+      reply = "Random misfire. Check spark plugs, ignition coils, vacuum leaks, and fuel injectors.";
+    } 
+    else if (msg.includes('p0171')) {
+      reply = "System too lean. Likely vacuum leak, dirty MAF sensor, or weak fuel pump.";
+    } 
+    else if (msg.includes('catalytic') || msg.includes('p0420')) {
+      reply = "Catalytic efficiency low. Check O2 sensors before replacing the cat.";
+    } 
+    else if (msg.includes('no start')) {
+      reply = "Check fuel pump, spark, and crank sensor. Start with fuel pressure.";
+    } 
+    else if (msg.includes('overheat')) {
+      reply = "Check coolant level, thermostat, radiator, and water pump.";
+    } 
+    else if (msg.includes('battery')) {
+      reply = "Check voltage (12.6V off). Could be alternator, bad ground, or dead battery.";
+    }
 
-    const ai = await openai.chat.completions.create({
-      model:"gpt-4o-mini",
-      messages:[
-        {role:"system",content:"You are a professional automotive mechanic helping diagnose vehicle problems."},
-        {role:"user",content:req.body.question}
-      ]
-    });
+    // Save to MongoDB
+    const newQuery = new Query({ message, reply });
+    await newQuery.save();
 
-    const answer = ai.choices[0].message.content;
+    res.json({ reply });
 
-    await Question.create({
-      question:req.body.question,
-      answer
-    });
-
-    res.json({answer});
-
-  }catch(err){
-    res.status(500).json({error:"AI request failed"});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ reply: 'Server error' });
   }
 });
 
-// history
-app.get("/history",async(req,res)=>{
-  const data = await Question.find().sort({createdAt:-1}).limit(20);
-  res.json(data);
+// ===== OPTIONAL: GET HISTORY =====
+app.get('/api/history', async (req, res) => {
+  try {
+    const history = await Query.find().sort({ createdAt: -1 }).limit(10);
+    res.json(history);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch history' });
+  }
 });
 
-// frontend
-app.use(express.static(path.join(__dirname,"public")));
+// ===== ROOT ROUTE =====
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-app.listen(PORT,()=>{
-  console.log("Garage Wisdom running on port "+PORT);
+// ===== START SERVER =====
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
